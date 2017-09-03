@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <remote>
+    <corpid value="1"></corpid>
+    <corpsecret value=""></corpsecret>
+    <token value=""></token>
+    <apis>
+      <schedule value=""></schedule>
+      <attendenceSource value=""></attendenceSource>
+      <attendenceSign value=""></attendenceSign>
+      <auditResult value=""></auditResult>
+    </apis>
+  </remote>
+  <localConnection>
+    <server value=""></server>
+    <user value=""></user>
+    <password value=""></password>
+    <database value=""></database>
+    <connectionString value=""></connectionString>
+  </localConnection>
+  <syncParam>
+    <startTime value=""></startTime>
+    <interval value=""></interval>
+  </syncParam>
+</root>
