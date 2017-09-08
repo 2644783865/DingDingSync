@@ -2,26 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Serialization;
+using System.Threading.Tasks;
 using System.Xml;
 using System.IO;
 
-namespace TongXineSyncService
+namespace Conf
 {
-    internal class Configuration
+    public class Configuration
     {
-        #region 配置参数
-
-        //xml配置文件路径
         public static string BaseDir = AppDomain.CurrentDomain.BaseDirectory;
 
         public static string config_file = Path.Combine(BaseDir, "ServiceSetting.xml");
+
+        #region 配置参数
 
         //钉钉corpid,corpsecret,token
 
         private static string _corpid;
         private static string _corpsecret;
-        private static string _token;
+        //private static string _token;
 
         //本地服务器连接参数
 
@@ -29,6 +28,7 @@ namespace TongXineSyncService
         private static string _user;
         private static string _password;
         private static string _db;
+        private static string _connectionString;
 
         //同步内容参数
 
@@ -41,6 +41,8 @@ namespace TongXineSyncService
 
         private static DateTime _startDate; //开始时间
         private static int _interval; //间隔时间分钟
+
+        #region 属性
 
         public static string CorpID
         {
@@ -76,6 +78,12 @@ namespace TongXineSyncService
         {
             get { return _db; }
             set { _db = value; }
+        }
+
+        public static string ConnectionString
+        {
+            get { return _connectionString; }
+            set { _connectionString = value; }
         }
 
         public static bool Schedule
@@ -114,8 +122,11 @@ namespace TongXineSyncService
             set { _interval = value; }
         }
 
+        #endregion 属性
+
         #endregion 配置参数
 
+        //参数加载
         public static bool Load()
         {
             bool retVal = false;
@@ -124,19 +135,24 @@ namespace TongXineSyncService
             {
                 try
                 {
+                    //企业CorpID CorpSecret
                     CorpID = DesHelper.DesHelper.DecryptString(GetSingleAttr(xmlDoc, "root/remote/corpid[1]"));
                     CorpSecret = DesHelper.DesHelper.DecryptString(GetSingleAttr(xmlDoc, "root/remote/corpsecret[1]"));
 
+                    //本地数据库
                     Server = GetSingleAttr(xmlDoc, "root/localConnection/server[1]");
                     User = GetSingleAttr(xmlDoc, "root/localConnection/user[1]");
                     Password = DesHelper.DesHelper.DecryptString(GetSingleAttr(xmlDoc, "root/localConnection/password[1]"));
                     DB = GetSingleAttr(xmlDoc, "root/localConnection/database[1]");
+                    ConnectionString = DesHelper.DesHelper.DecryptString(GetSingleAttr(xmlDoc, "root/localConnection/connectionString[1]"));
 
+                    //同步内容选项
                     Schedule = GetSingleAttr(xmlDoc, "root/remote/apis/schedule[1]") == "1" ? true : false;
                     AttendenceSource = GetSingleAttr(xmlDoc, "root/remote/apis/attendenceSource[1]") == "1" ? true : false;
                     AttendenceSign = GetSingleAttr(xmlDoc, "root/remote/apis/attendenceSign[1]") == "1" ? true : false;
                     AuditResult = GetSingleAttr(xmlDoc, "root/remote/apis/auditResult[1]") == "1" ? true : false;
 
+                    //同步时间选项
                     StartDate = DateTime.Parse(string.IsNullOrEmpty(GetSingleAttr(xmlDoc, "root/syncParam/startTime[1]")) ? DateTime.Now.ToString() : GetSingleAttr(xmlDoc, "root/syncParam/startTime[1]"));
                     Interval = Convert.ToInt16(GetSingleAttr(xmlDoc, "root/syncParam/interval[1]"));
                     retVal = true;

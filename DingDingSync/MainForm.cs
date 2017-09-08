@@ -12,8 +12,9 @@ using System.Net;
 using System.IO;
 using System.ServiceProcess;
 using System.Diagnostics;
-using Newtonsoft.Json;
 using DesHelper;
+
+using Newtonsoft.Json;
 
 namespace DingDingSync
 {
@@ -33,7 +34,6 @@ namespace DingDingSync
 
         private string _CorpID;
         private string _CorpSecret;
-        private string _Token;
 
         private string _Server;
         private string _User;
@@ -69,14 +69,6 @@ namespace DingDingSync
             set
             {
                 this._CorpSecret = value;
-            }
-        }
-
-        protected string Token
-        {
-            get
-            {
-                return this._Token;
             }
         }
 
@@ -297,7 +289,7 @@ namespace DingDingSync
 
             string url = _tokenUrl + string.Format("corpid={0}&corpsecret={1}", this.tbCorpID.Text, this.tbCorpSecret.Text);
             HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-            request.Timeout = 3000;
+            request.Timeout = 5000;
             request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36";
             using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
             {

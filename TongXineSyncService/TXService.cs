@@ -6,9 +6,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
-using DingTalk.Api;
 using System.IO;
 using System.Threading;
+using Log_Easy;
+using Operation;
 
 namespace TongXineSyncService
 {
@@ -21,22 +22,8 @@ namespace TongXineSyncService
 
         protected override void OnStart(string[] args)
         {
-            if (Configuration.Load())
-            {
-                using (FileStream fs = new FileStream("log.txt", FileMode.Append))
-                {
-                    byte[] inBlock = Encoding.UTF8.GetBytes(Configuration.CorpSecret);
-                    fs.Write(inBlock, 0, inBlock.Length);
-                }
-            }
-            else
-            {
-                using (FileStream fs = new FileStream("log.txt", FileMode.Append))
-                {
-                    byte[] inBlock = Encoding.UTF8.GetBytes("abc");
-                    fs.Write(inBlock, 0, inBlock.Length);
-                }
-            }
+            Loger.log.Info(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\t启动服务");
+            DataCollection.GetScheduleList("2017-09-01 10:00:00", 0, 200);
         }
 
         protected override void OnStop()
