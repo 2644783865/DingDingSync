@@ -11,15 +11,15 @@ namespace TongXineSyncService
 {
     internal class Loger
     {
-        public static string LogPath = Path.Combine(Configuration.BaseDir, "Log\\log.txt");
+        public static string LogPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Log\\log.txt");
 
         public static clsLogger log = new clsLogger(GetLogPath());
 
         private static string GetLogPath()
         {
-            if (!Directory.Exists(Path.Combine(Configuration.BaseDir, "\\Log")))
+            if (!Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Log")))
             {
-                Directory.CreateDirectory(Path.Combine(Configuration.BaseDir, "\\Log"));
+                Directory.CreateDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Log"));
             }
             if (!File.Exists(LogPath))
             {

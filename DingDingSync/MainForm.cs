@@ -402,7 +402,7 @@ namespace DingDingSync
         private void btnSetSchedule_Click(object sender, EventArgs e)
         {
             XmlDocument xmlDoc = CreateXmlReader();
-            string startDate = this.dateTimePicker1.Value.ToString().Substring(0, 15);
+            string startDate = this.dateTimePicker1.Value.ToString();
             string interval = this.tbInterval.Text;
             interval = string.IsNullOrEmpty(interval) ? this._defaultInterval : interval;
 

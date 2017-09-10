@@ -81,6 +81,10 @@
       <Project>{d7f6fd7d-605d-432c-86ce-f84d29bf6219}</Project>
       <Name>DataObject</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DBUtility\DBUtility.csproj">
+      <Project>{11da1bb4-dcb4-46a3-9ef4-156c953a0227}</Project>
+      <Name>DBUtility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

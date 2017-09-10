@@ -20,7 +20,6 @@ namespace Conf
 
         private static string _corpid;
         private static string _corpsecret;
-        //private static string _token;
 
         //本地服务器连接参数
 

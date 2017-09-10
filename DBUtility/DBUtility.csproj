@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7356CCC9-5706-4193-9693-DFC4C6448131}</ProjectGuid>
+    <ProjectGuid>{11DA1BB4-DCB4-46A3-9EF4-156C953A0227}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Conf</RootNamespace>
-    <AssemblyName>Conf</AssemblyName>
+    <RootNamespace>DBUtility</RootNamespace>
+    <AssemblyName>DBUtility</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,8 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -60,13 +58,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configure.cs" />
+    <Compile Include="DBUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DesHelper\DesHelper.csproj">
-      <Project>{1f7c784c-9ff8-478f-be23-5a40f03cbefc}</Project>
-      <Name>DesHelper</Name>
+    <ProjectReference Include="..\Conf\Conf.csproj">
+      <Project>{7356ccc9-5706-4193-9693-dfc4c6448131}</Project>
+      <Name>Conf</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

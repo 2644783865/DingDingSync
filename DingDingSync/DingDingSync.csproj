@@ -53,6 +53,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>008_Reminder.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Log Easy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Log.Easy.1.0.0\lib\Log Easy.dll</HintPath>
@@ -109,6 +112,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="008_Reminder.ico" />
     <Content Include="ServiceSetting.xml">
       <SubType>Designer</SubType>
     </Content>
