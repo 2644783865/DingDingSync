@@ -212,4 +212,269 @@ namespace DataObject
     public class AttendGroupResultDetail { }
 
     #endregion 考勤组
+
+    #region 考勤打卡记录
+
+    /*记录结构示例
+
+    {
+	  "errmsg": "ok",
+	  "recordresult": [{
+		      "gmtModified": 1492574948000,
+		      "isLegal": "N",
+		      "baseCheckTime": 1492568460000,
+		      "id": 991197412,
+		      "userAddress": "北京市朝阳区崔各庄镇阿里中心.望京A座阿里巴巴绿地中心",
+		      "userId": "manager7078",
+		      "checkType": "OnDuty",
+		      "timeResult": "Normal",
+		      "deviceId": "cb7ace07d52fe9be14f4d8bec5e1ba79",
+		      "corpId": "ding7536bfee6fb1fa5a35c2f4657eb6378f",
+		      "sourceType": "USER",
+		      "workDate": 1492531200000,
+		      "planCheckTime": 1492568497000,
+		      "gmtCreate": 1492574948000,
+		      "locationMethod": "MAP",
+		      "locationResult": "Outside",
+		      "userLongitude": 116.486888,
+		      "planId": 4556390053,
+		      "groupId": 121325603,
+		      "userAccuracy": 65,
+		      "userCheckTime": 1492568497000,
+		      "userLatitude": 39.999946    
+    } ],
+	  "errcode": 0
+}
+*/
+
+    public class AttendResult
+    {
+        public string errmsg { get; set; }
+
+        [JsonProperty(PropertyName = "recordresult")]
+        public List<AttendResultDetail> results { get; set; }
+
+        public int errcode { get; set; }
+    }
+
+    public class AttendResultDetail
+    {
+        public long gmtModified { get; set; }
+        public string isLegal { get; set; }
+        public long baseCheckTime { get; set; }
+        public int id { get; set; }
+        public string userAddress { get; set; }
+        public string userId { get; set; }
+        public string checkType { get; set; }
+        public string timeResult { get; set; }
+        public string deviceId { get; set; }
+        public string corpId { get; set; }
+        public string sourceType { get; set; }
+        public long workDate { get; set; }
+        public long planCheckTime { get; set; }
+        public long gmtCreate { get; set; }
+        public string locationMethod { get; set; }
+        public string locationResult { get; set; }
+        public long userLongitude { get; set; }
+        public int planId { get; set; }
+        public int groupId { get; set; }
+        public int userAccuracy { get; set; }
+        public long userCheckTime { get; set; }
+        public double userLatitude { get; set; }
+    }
+
+    #endregion 考勤打卡记录
+
+    #region 签到记录
+
+    /*签到记录结构示例
+ {
+    "dingtalk_smartwork_checkin_record_get_response":{
+        "result":{
+            "result":{
+                "next_cursor":100,
+                "page_list":{
+                    "checkin_record_vo":[
+                        {
+                            "checkin_time":1494852872446,
+                            "image_list":{
+                                "string":[
+                                    "[\"http:\/\/image\"]"
+                                ]
+                            },
+                            "detail_place":"家里详细地址",
+                            "remark":"备注",
+                            "userid":"080517",
+                            "place":"家里",
+                            "longitude":"30.28030734592014",
+                            "latitude":"31.28030734592014"
+                        }
+                    ]
+                }
+            },
+            "ding_open_errcode":0,
+            "success":true,
+            "error_msg":"OK"
+        }
+    }
+}
+ */
+
+    public class CheckinResult
+    {
+        public CheckinResponse dingtalk_smartwork_checkin_record_get_response { get; set; }
+    }
+
+    public class CheckinResponse
+    {
+        public ResponseResult result { get; set; }
+        public int ding_open_errcode { get; set; }
+        public bool success { get; set; }
+        public string error_msg { get; set; }
+    }
+
+    public class ResponseResult
+    {
+        public int next_cursor { get; set; }
+        public PageList page_list { get; set; }
+    }
+
+    public class PageList
+    {
+        public CheckiDetail checkin_record_vo { get; set; }
+    }
+
+    public class CheckiDetail
+    {
+        public long checkin_time { get; set; }
+        public ImageList image_list { get; set; }
+        public string detial_place { get; set; }
+        public string remark { get; set; }
+        public string userid { get; set; }
+        public string place { get; set; }
+        public string longitude { get; set; }
+        public string latitude { get; set; }
+    }
+
+    public class ImageList
+    {
+        [JsonProperty(PropertyName = "string")]
+        public List<string> images { get; set; }
+    }
+
+    #endregion 签到记录
+
+    #region 审批记录
+
+    /*
+     * {
+    "dingtalk_smartwork_bpms_processinstance_list_response":{
+        "result":{
+            "result":{
+                "list":{
+                    "process_instance_top_vo":[
+                        {
+                            "process_instance_id":"cbf290af-fc41-4368-bdd7-8b52a28bc",
+                            "title":"测试",
+                            "create_time":"1497249913000",
+                            "finish_time":"1497249913000",
+                            "originator_userid":"08051744586",
+                            "originator_dept_id":"-1",
+                            "status":"RUNNING",
+                            "approver_userid_list":{
+                                "string":[
+                                    "0874458646137"
+                                ]
+                            },
+                            "cc_userid_list":{
+                                "string":[
+                                    "0874458646137"
+                                ]
+                            },
+                            "form_component_values":{
+                                "form_component_value_vo":[
+                                    {
+                                        "name":"测试标签",
+                                        "value":"测试值"
+                                    }
+                                ]
+                            },
+                            "process_instance_result":"agree"
+                        }
+                    ]
+                },
+                "next_cursor":2
+            },
+            "ding_open_errcode":0,
+            "error_msg":"成功",
+            "success":true
+        }
+    }
+}
+
+     */
+
+    public class ProcessInstance
+    {
+        public ProcessResponse dingtalk_smartwork_bpms_processinstance_list_response { get; set; }
+    }
+
+    public class ProcessResponse
+    {
+        public ProcessResponseResult result { get; set; }
+        public int ding_open_errcode { get; set; }
+        public string error_msg { get; set; }
+        public bool success { get; set; }
+    }
+
+    public class ProcessResponseResult
+    {
+        public InstanceResponseResult list { get; set; }
+        public int next_cursor { get; set; }
+    }
+
+    public class InstanceResponseResult
+    {
+        public List<ResultList> process_instance_top_vo { get; set; }
+    }
+
+    public class ResultList
+    {
+        public string process_instance_id { get; set; }
+        public string title { get; set; }
+        public string create_time { get; set; }
+        public string finish_time { get; set; }
+        public string originator_userid { get; set; }
+        public string originator_dept_id { get; set; }
+        public string status { get; set; }
+        public ApproverUserList approver_userid_list { get; set; }
+        public CCUserList cc_userid_list { get; set; }
+        public FormComponentValues form_component_values { get; set; }
+        public string process_instance_result { get; set; }
+    }
+
+    public class ApproverUserList
+    {
+        [JsonProperty(PropertyName = "string")]
+        public List<string> approverlist { get; set; }
+    }
+
+    public class CCUserList
+    {
+        [JsonProperty(PropertyName = "string")]
+        public List<string> cclist { get; set; }
+    }
+
+    public class FormComponentValues
+    {
+        public List<FormComponentValueVo> form_componet_value_vo { get; set; }
+    }
+
+    public class FormComponentValueVo
+    {
+        public string name { get; set; }
+        public string value { get; set; }
+    }
+
+    #endregion 审批记录
 }

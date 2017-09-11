@@ -43,7 +43,7 @@ namespace TongXineSyncService
             if (totalMinutes <= 0)
             {
                 long point1 = Math.Abs(totalMinutes) / interval + 1;
-                dueTime = point1 - Math.Abs(totalMinutes);
+                dueTime = point1 * interval - Math.Abs(totalMinutes);
             }
             else
             {
@@ -53,7 +53,7 @@ namespace TongXineSyncService
             Loger.log.Info(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\t服务已开启");
             Loger.log.Info(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\t配置文件加载成功");
 
-            timer = new Timer(new TimerCallback(DataCollection.GetMinuteResultCollection), null, dueTime * 60 * 1000, interval);
+            timer = new Timer(new TimerCallback(DataCollection.GetMinuteResultCollection), null, dueTime * 60 * 1000, interval * 1000 * 60);
         }
 
         protected override void OnStop()

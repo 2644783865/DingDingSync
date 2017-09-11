@@ -16,13 +16,12 @@ using DingTalk.Api.Request;
 using DingTalk.Api.Response;
 using Top.Api;
 
-//using Conf;
-
 namespace Operation
 {
     public class DataCollection
     {
         public static string DataFloder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
+        public static string ErrorFloder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Error");
         public static string AttendListScheduleURI = "https://eco.taobao.com/router/rest";
         public static string AttendSimpleGroupURI = "https://eco.taobao.com/router/rest";
         public static string AttendRecordURI = "https://oapi.dingtalk.com/attendance/listRecord?access_token=";
@@ -96,37 +95,59 @@ namespace Operation
         //获取排班
         public static void GetScheduleList(string work_date, int offset, int size, string corpid, string corpsecret)
         {
-            GetToken(corpid, corpsecret);
-            IDingTalkClient client = new DefaultDingTalkClient(AttendListScheduleURI, Constants.FORMAT_JSON);
-            SmartworkAttendsListscheduleRequest req = new SmartworkAttendsListscheduleRequest
+            try
             {
-                WorkDate = DateTime.Parse(work_date),
-                Offset = offset,
-                Size = size
-            };
+                GetToken(corpid, corpsecret);
+                IDingTalkClient client = new DefaultDingTalkClient(AttendListScheduleURI, Constants.FORMAT_JSON);
+                SmartworkAttendsListscheduleRequest req = new SmartworkAttendsListscheduleRequest
+                {
+                    WorkDate = DateTime.Parse(work_date),
+                    Offset = offset,
+                    Size = size
+                };
 
-            SmartworkAttendsListscheduleResponse rsp = client.Execute(req, _Token);
-            string content = rsp.Body;
-            byte[] outBlock = Encoding.UTF8.GetBytes(content);
-            using (FileStream fs = new FileStream(GetDataPath(string.Format(@"ScheduleListData{0}.json", DateTime.Now.ToString("yyyyMMddHHmmss"))), FileMode.Create))
+                SmartworkAttendsListscheduleResponse rsp = client.Execute(req, _Token);
+                string content = rsp.Body;
+                byte[] outBlock = Encoding.UTF8.GetBytes(content);
+                using (FileStream fs = new FileStream(GetDataPath(string.Format(@"ScheduleListData{0}.json", DateTime.Now.ToString("yyyyMMddHHmmss"))), FileMode.Create))
+                {
+                    fs.Write(outBlock, 0, outBlock.Length);
+                }
+            }
+            catch (Exception ex)
             {
-                fs.Write(outBlock, 0, outBlock.Length);
+                using (FileStream fs = new FileStream(Path.Combine(ErrorFloder, "error.txt"), FileMode.Append))
+                {
+                    Message msg = new Message(ex.Message);
+                    fs.Write(msg.bMsg, 0, msg.Length);
+                }
             }
         }
 
         //获取考勤组
         public static void GetAttendGroup(string corpid, string corpsecret)
         {
-            GetToken(corpid, corpsecret);
-            IDingTalkClient client = new DefaultDingTalkClient(AttendSimpleGroupURI, Constants.FORMAT_JSON);
-            SmartworkAttendsGetsimplegroupsRequest req = new SmartworkAttendsGetsimplegroupsRequest();
-            SmartworkAttendsGetsimplegroupsResponse rsp = client.Execute(req, _Token);
-            string content = rsp.Body;
-            byte[] outBlock = Encoding.UTF8.GetBytes(content);
-
-            using (FileStream fs = new FileStream(GetDataPath(string.Format(@"AttendGroup{0}.json", DateTime.Now.ToString("yyyyMMddHHmmss"))), FileMode.Create))
+            try
             {
-                fs.Write(outBlock, 0, outBlock.Length);
+                GetToken(corpid, corpsecret);
+                IDingTalkClient client = new DefaultDingTalkClient(AttendSimpleGroupURI, Constants.FORMAT_JSON);
+                SmartworkAttendsGetsimplegroupsRequest req = new SmartworkAttendsGetsimplegroupsRequest();
+                SmartworkAttendsGetsimplegroupsResponse rsp = client.Execute(req, _Token);
+                string content = rsp.Body;
+                byte[] outBlock = Encoding.UTF8.GetBytes(content);
+
+                using (FileStream fs = new FileStream(GetDataPath(string.Format(@"AttendGroup{0}.json", DateTime.Now.ToString("yyyyMMddHHmmss"))), FileMode.Append))
+                {
+                    fs.Write(outBlock, 0, outBlock.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                using (FileStream fs = new FileStream(Path.Combine(ErrorFloder, "error.txt"), FileMode.Append))
+                {
+                    Message msg = new Message(ex.Message);
+                    fs.Write(msg.bMsg, 0, msg.Length);
+                }
             }
         }
 
@@ -139,26 +160,37 @@ namespace Operation
         //获取全部员工打卡记录
         public static void GetAttendResult(string reqBody, string corpid, string corpsecret)
         {
-            GetToken(corpid, corpsecret);
-            byte[] outBlock;
-            byte[] inBlock = Encoding.UTF8.GetBytes(reqBody);
-            string url = AttendRecordURI + _Token;
-            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-            request.Method = "POST";
-            request.ContentType = "application/json";
-            Stream dataStream = request.GetRequestStream();
-            dataStream.Write(inBlock, 0, inBlock.Length);
-            using (HttpWebResponse rsp = request.GetResponse() as HttpWebResponse)
+            try
             {
-                using (StreamReader sr = new StreamReader(rsp.GetResponseStream()))
+                GetToken(corpid, corpsecret);
+                byte[] outBlock;
+                byte[] inBlock = Encoding.UTF8.GetBytes(reqBody);
+                string url = AttendRecordURI + _Token;
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(inBlock, 0, inBlock.Length);
+                using (HttpWebResponse rsp = request.GetResponse() as HttpWebResponse)
                 {
-                    outBlock = Encoding.UTF8.GetBytes(sr.ReadToEnd());
+                    using (StreamReader sr = new StreamReader(rsp.GetResponseStream()))
+                    {
+                        outBlock = Encoding.UTF8.GetBytes(sr.ReadToEnd());
+                    }
+                }
+
+                using (FileStream fs = new FileStream(GetDataPath(string.Format(@"AttendResult{0}.json", DateTime.Now.ToString("yyyyMMddHHmmss"))), FileMode.Append))
+                {
+                    fs.Write(outBlock, 0, outBlock.Length);
                 }
             }
-
-            using (FileStream fs = new FileStream(GetDataPath(string.Format(@"AttendResult{0}.json", DateTime.Now.ToString("yyyyMMddHHmmss"))), FileMode.Create))
+            catch (Exception ex)
             {
-                fs.Write(outBlock, 0, outBlock.Length);
+                using (FileStream fs = new FileStream(Path.Combine(ErrorFloder, "error.txt"), FileMode.Append))
+                {
+                    Message msg = new Message(ex.Message);
+                    fs.Write(msg.bMsg, 0, msg.Length);
+                }
             }
         }
 
@@ -175,85 +207,130 @@ namespace Operation
         //获取签到数据
         public static void GetCheckinResult(List<string> userids, DateTime startTime, DateTime endTime, int cursor, int size, string corpid, string corpsecret)
         {
-            GetToken(corpid, corpsecret);
-
-            DateTime dt = new DateTime(1970, 1, 1, 8, 0, 0);
-            TimeSpan startTimespan = startTime - dt;
-            TimeSpan endTimespan = endTime - dt;
-
-            IDingTalkClient client = new DefaultDingTalkClient(CheckinRecordURI);
-            SmartworkCheckinRecordGetRequest req = new SmartworkCheckinRecordGetRequest
+            try
             {
-                UseridList = string.Join(",", userids),
-                StartTime = startTimespan.Milliseconds,
-                EndTime = endTimespan.Milliseconds,
-                Cursor = cursor,
-                Size = size
-            };
-            SmartworkCheckinRecordGetResponse response = client.Execute(req, _Token);
-            string content = response.Body;
-            byte[] outBlock = Encoding.UTF8.GetBytes(content);
-            using (FileStream fs = new FileStream(GetDataPath(string.Format(@"CheckinResult{0}.json", DateTime.Now.ToString("yyyyMMddHHmmss"))), FileMode.Create))
+                GetToken(corpid, corpsecret);
+
+                DateTime dt = new DateTime(1970, 1, 1, 8, 0, 0);
+                TimeSpan startTimespan = startTime - dt;
+                TimeSpan endTimespan = endTime - dt;
+
+                IDingTalkClient client = new DefaultDingTalkClient(CheckinRecordURI);
+                SmartworkCheckinRecordGetRequest req = new SmartworkCheckinRecordGetRequest
+                {
+                    UseridList = string.Join(",", userids),
+                    StartTime = startTimespan.Milliseconds,
+                    EndTime = endTimespan.Milliseconds,
+                    Cursor = cursor,
+                    Size = size
+                };
+                SmartworkCheckinRecordGetResponse response = client.Execute(req, _Token);
+                string content = response.Body;
+                byte[] outBlock = Encoding.UTF8.GetBytes(content);
+                using (FileStream fs = new FileStream(GetDataPath(string.Format(@"CheckinResult{0}.json", DateTime.Now.ToString("yyyyMMddHHmmss"))), FileMode.Create))
+                {
+                    fs.Write(outBlock, 0, outBlock.Length);
+                }
+            }
+            catch (Exception ex)
             {
-                fs.Write(outBlock, 0, outBlock.Length);
+                using (FileStream fs = new FileStream(Path.Combine(ErrorFloder, "error.txt"), FileMode.Append))
+                {
+                    Message msg = new Message(ex.Message);
+                    fs.Write(msg.bMsg, 0, msg.Length);
+                }
             }
         }
 
         //获取审批数据
         public static void GetProcessInstanceList(string processCode, DateTime startTime, DateTime endTime, int cursor, int size, string corpid, string corpsecret)
         {
-            GetToken(corpid, corpsecret);
-
-            DateTime dt = new DateTime(1970, 1, 1, 8, 0, 0);
-            TimeSpan startTimepspan = startTime - dt;
-            TimeSpan endTimespan = endTime - dt;
-
-            IDingTalkClient client = new DefaultDingTalkClient(ProcessInstanceURI);
-            SmartworkBpmsProcessinstanceListRequest request = new SmartworkBpmsProcessinstanceListRequest
+            try
             {
-                ProcessCode = processCode,
-                StartTime = startTimepspan.Milliseconds,
-                EndTime = endTimespan.Milliseconds,
-                Cursor = cursor,
-                Size = size
-            };
+                GetToken(corpid, corpsecret);
 
-            SmartworkBpmsProcessinstanceListResponse response = client.Execute(request, _Token);
-            string content = response.Body;
-            byte[] outBlock = Encoding.UTF8.GetBytes(content);
+                DateTime dt = new DateTime(1970, 1, 1, 8, 0, 0);
+                TimeSpan startTimepspan = startTime - dt;
+                TimeSpan endTimespan = endTime - dt;
 
-            using (FileStream fs = new FileStream(GetDataPath(string.Format(@"ProcessInstance{0}.json", DateTime.Now.ToString("yyyyMMddHHmmss"))), FileMode.Create))
+                IDingTalkClient client = new DefaultDingTalkClient(ProcessInstanceURI);
+                SmartworkBpmsProcessinstanceListRequest request = new SmartworkBpmsProcessinstanceListRequest
+                {
+                    ProcessCode = processCode,
+                    StartTime = startTimepspan.Milliseconds,
+                    EndTime = endTimespan.Milliseconds,
+                    Cursor = cursor,
+                    Size = size
+                };
+
+                SmartworkBpmsProcessinstanceListResponse response = client.Execute(request, _Token);
+                string content = response.Body;
+                byte[] outBlock = Encoding.UTF8.GetBytes(content);
+
+                using (FileStream fs = new FileStream(GetDataPath(string.Format(@"ProcessInstance{0}.json", DateTime.Now.ToString("yyyyMMddHHmmss"))), FileMode.Create))
+                {
+                    fs.Write(outBlock, 0, outBlock.Length);
+                }
+            }
+            catch (Exception ex)
             {
-                fs.Write(outBlock, 0, outBlock.Length);
+                using (FileStream fs = new FileStream(Path.Combine(ErrorFloder, "error.txt"), FileMode.Append))
+                {
+                    Message msg = new Message(ex.Message);
+                    fs.Write(msg.bMsg, 0, msg.Length);
+                }
             }
         }
 
         //批量执行打卡记录、签到数据、、审批数据
         public static void GetMinuteResultCollection(object obj)
         {
-            DBUtility db = DBUtility.Create();
-            DataTable dt = db.Select("zlemployee", new string[] { "code" });
-            List<string> userids = new List<string>();
-
-            foreach (DataRow dr in dt.Rows)
+            try
             {
-                userids.Add(dr["code"].ToString());
+                DBUtility db = new DBUtility();
+                DataTable dt = db.Select("zlemployee", new string[] { "code" });
+                List<string> userids = new List<string>();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    userids.Add(dr["code"].ToString());
+                }
+
+                AttendRequestBody attendReqBody = new AttendRequestBody
+                {
+                    userIds = userids.GetRange(0, 10),
+                    checkDateFrom = "2017-09-01 00:00:00",
+                    checkDateTo = "2017-09-01 23:59:59"
+                };
+                string reqBody = JsonConvert.SerializeObject(attendReqBody);
+
+                GetAttendResult(reqBody, Configuration.CorpID, Configuration.CorpSecret);
+                GetAttendGroup(Configuration.CorpID, Configuration.CorpSecret);
+                GetScheduleList("2017-09-01", 0, 200, Configuration.CorpID, Configuration.CorpSecret);
             }
-
-            AttendRequestBody attendReqBody = new AttendRequestBody
+            catch (Exception ex)
             {
-                userIds = userids.GetRange(0, 10),
-                checkDateFrom = "2017-09-01 00:00:00",
-                checkDateTo = "2017-09-01 23:59:59"
-            };
-            string reqBody = JsonConvert.SerializeObject(attendReqBody);
-
-            GetAttendResult(reqBody, Configuration.CorpID, Configuration.CorpSecret);
-            GetAttendGroup(Configuration.CorpID, Configuration.CorpSecret);
-            GetScheduleList("2017-09-01", 0, 200, Configuration.CorpID, Configuration.CorpSecret);
+                using (FileStream fs = new FileStream(Path.Combine(ErrorFloder, "error.txt"), FileMode.Append))
+                {
+                    Message msg = new Message(ex.Message);
+                    fs.Write(msg.bMsg, 0, msg.Length);
+                }
+            }
         }
 
         //批量执行排班记录
         public static void GetDayResultCollection() { }
+    }
+
+    internal class Message
+    {
+        public byte[] bMsg { get; set; }
+        public int Length { get; private set; }
+
+        public Message(string ex)
+        {
+            bMsg = Encoding.UTF8.GetBytes(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex + "\r\n");
+            Length = bMsg.Length;
+        }
     }
 }

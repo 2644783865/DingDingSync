@@ -13,71 +13,62 @@ namespace DBTools
 {
     public class DBUtility
     {
-        private static DBUtility db = null;
-
-        private SqlConnection sqlConnection = null;
+        private SqlConnection sqlConnection;//= new SqlConnection(Configuration.ConnectionString);
         private DataSet dataSet = new DataSet();
 
-        private DBUtility()
+        public DBUtility()
         {
-            this.sqlConnection = new SqlConnection(Configuration.ConnectionString);
+            sqlConnection = new SqlConnection(Configuration.ConnectionString);
             this.dataSet.Tables.Add("kq_source_ding");   //钉钉打卡原始数据表
             this.dataSet.Tables.Add("kq_sourceqk_ding"); //钉钉签卡记录表
             this.dataSet.Tables.Add("kq_paiban_ding");   //钉钉排班记录表
             this.dataSet.Tables.Add("kq_process_ding");  //钉钉审批数据表
         }
 
-        public static DBUtility Create()
-        {
-            if (db == null)
-            {
-                db = new DBUtility();
-            }
-            return db;
-        }
-
         //打开数据库连接
         public void OpenConnection()
         {
-            if (this.sqlConnection.State == ConnectionState.Closed)
+            if (sqlConnection.State != ConnectionState.Open)
             {
-                this.sqlConnection.Open();
+                sqlConnection.Open();
             }
         }
 
         //关闭数据库连接
         public void CloseConnection()
         {
-            this.sqlConnection.Close();
+            if (sqlConnection.State != ConnectionState.Closed)
+                sqlConnection.Close();
         }
 
         public List<string> Select()
         {
             List<string> userids = new List<string>();
-            SqlCommand cmd = new SqlCommand
+            using (sqlConnection)
             {
-                Connection = this.sqlConnection,
-                CommandText = @"select code from zlemployee where isnull(lzdate,getdate())<dateadd(day,-7,getdate()) order by code"
-            };
-            try
-            {
-                OpenConnection();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                SqlCommand cmd = new SqlCommand
                 {
-                    userids.Add((string)reader[0]);
-                }
-            }
-            catch (Exception e)
-            {
-                using (FileStream fs = new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "error.log"), FileMode.Append))
+                    Connection = sqlConnection,
+                    CommandText = @"select code from zlemployee where isnull(lzdate,getdate())<dateadd(day,-7,getdate()) order by code"
+                };
+                try
                 {
-                    fs.Write(Encoding.UTF8.GetBytes(e.Message + "\r\n"), 0, e.Message.Length);
+                    sqlConnection.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            userids.Add((string)reader[0]);
+                        }
+                    }
                 }
-            }
-            finally
-            {
-                this.CloseConnection();
+                catch (Exception e)
+                {
+                    using (FileStream fs = new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "error.log"), FileMode.Append))
+                    {
+                        fs.Write(Encoding.UTF8.GetBytes(e.Message + "\r\n"), 0, e.Message.Length);
+                    }
+                }
             }
             return userids;
         }
@@ -101,19 +92,25 @@ namespace DBTools
             sql = "select " + (columns.Length <= 1 ? columns[0] : string.Join(",", columns)) + " from " + table + " where " + where;
             try
             {
-                OpenConnection();
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = sqlConnection;
                 cmd.CommandText = sql;
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+
+                using (sqlConnection)
                 {
-                    DataRow row = dt.NewRow();
-                    foreach (string columnName in columns)
+                    sqlConnection.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        row[columnName] = reader[columnName];
+                        while (reader.Read())
+                        {
+                            DataRow row = dt.NewRow();
+                            foreach (string columnName in columns)
+                            {
+                                row[columnName] = reader[columnName];
+                            }
+                            dt.Rows.Add(row);
+                        }
                     }
-                    dt.Rows.Add(row);
                 }
             }
             catch (Exception e)
@@ -122,10 +119,6 @@ namespace DBTools
                 {
                     fs.Write(Encoding.UTF8.GetBytes(e.Message + "\r\n"), 0, e.Message.Length);
                 }
-            }
-            finally
-            {
-                this.CloseConnection();
             }
             return dt;
         }
