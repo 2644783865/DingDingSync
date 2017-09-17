@@ -143,24 +143,34 @@ namespace DingDingSync
         //从配置文件读取参数，初始化参数
         protected void paramInit()
         {
-            XmlDocument xmlDoc = CreateXmlReader();
+            try
+            {
+                XmlDocument xmlDoc = CreateXmlReader();
 
-            this.tbCorpID.Text = DesHelper.DesHelper.DecryptString(GetSingleAttr(xmlDoc, "root/remote/corpid[1]"));
-            this.tbCorpSecret.Text = DesHelper.DesHelper.DecryptString(GetSingleAttr(xmlDoc, "root/remote/corpsecret[1]"));
-            this.tbToken.Text = DesHelper.DesHelper.DecryptString(GetSingleAttr(xmlDoc, "root/remote/token"));
+                this.tbCorpID.Text = DesHelper.DesHelper.DecryptString(GetSingleAttr(xmlDoc, "root/remote/corpid[1]"));
+                this.tbCorpSecret.Text = DesHelper.DesHelper.DecryptString(GetSingleAttr(xmlDoc, "root/remote/corpsecret[1]"));
+                this.tbToken.Text = DesHelper.DesHelper.DecryptString(GetSingleAttr(xmlDoc, "root/remote/token"));
 
-            this.tbServer.Text = GetSingleAttr(xmlDoc, "root/localConnection/server[1]");
-            this.tbUser.Text = GetSingleAttr(xmlDoc, "root/localConnection/user[1]");
-            this.tbPassword.Text = DesHelper.DesHelper.DecryptString(GetSingleAttr(xmlDoc, "root/localConnection/password[1]"));
-            this.tbDataBase.Text = GetSingleAttr(xmlDoc, "root/localConnection/database[1]");
+                this.tbServer.Text = GetSingleAttr(xmlDoc, "root/localConnection/server[1]");
+                this.tbUser.Text = GetSingleAttr(xmlDoc, "root/localConnection/user[1]");
+                this.tbPassword.Text = DesHelper.DesHelper.DecryptString(GetSingleAttr(xmlDoc, "root/localConnection/password[1]"));
+                this.tbDataBase.Text = GetSingleAttr(xmlDoc, "root/localConnection/database[1]");
 
-            this.chbKqPanBan.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/schedule[1]") == "1" ? true : false;
-            this.chbKqSource.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/attendenceSource[1]") == "1" ? true : false;
-            this.chbKqSign.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/attendenceSign[1]") == "1" ? true : false;
-            this.chbWFResult.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/auditResult[1]") == "1" ? true : false;
+                this.chbKqPanBan.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/schedule[1]") == "1" ? true : false;
+                this.chbKqSource.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/attendenceSource[1]") == "1" ? true : false;
+                this.chbKqSign.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/attendenceSign[1]") == "1" ? true : false;
+                this.chbWFResult.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/auditResult[1]") == "1" ? true : false;
 
-            this.dateTimePicker1.Value = DateTime.Parse(string.IsNullOrEmpty(GetSingleAttr(xmlDoc, "root/syncParam/startTime[1]")) ? DateTime.Now.ToString() : GetSingleAttr(xmlDoc, "root/syncParam/startTime[1]"));
-            this.tbInterval.Text = GetSingleAttr(xmlDoc, "root/syncParam/interval[1]");
+                this.dateTimePicker1.Value = DateTime.Parse(string.IsNullOrEmpty(GetSingleAttr(xmlDoc, "root/syncParam/startTime[1]")) ? DateTime.Now.ToString() : GetSingleAttr(xmlDoc, "root/syncParam/startTime[1]"));
+                this.tbInterval.Text = GetSingleAttr(xmlDoc, "root/syncParam/interval[1]");
+                this.tbTimeRange.Text = GetSingleAttr(xmlDoc, "root/syncParam/timeRange[1]");
+                this.tbProcessRange.Text = GetSingleAttr(xmlDoc, "root/syncParam/processRange[1]");
+                this.tbPaiban.Text = GetSingleAttr(xmlDoc, "root/syncParam/scheduleRange[1]");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("读取配置文件ServiceSetting.xml失败，重新配置生成");
+            }
         }
 
         public XmlDocument CreateXmlReader()
@@ -405,9 +415,18 @@ namespace DingDingSync
             string startDate = this.dateTimePicker1.Value.ToString();
             string interval = this.tbInterval.Text;
             interval = string.IsNullOrEmpty(interval) ? this._defaultInterval : interval;
+            string timeRange = this.tbTimeRange.Text;
+            timeRange = string.IsNullOrEmpty(timeRange) ? "12" : timeRange;
+            string processRange = this.tbProcessRange.Text;
+            processRange = string.IsNullOrEmpty(processRange) ? "10" : processRange;
+            string paibanRange = this.tbPaiban.Text;
+            paibanRange = string.IsNullOrEmpty(paibanRange) ? "3" : paibanRange;
 
             this.SetSingleAttr(xmlDoc, "root/syncParam/startTime", "value", startDate);
             this.SetSingleAttr(xmlDoc, "root/syncParam/interval", "value", interval);
+            this.SetSingleAttr(xmlDoc, "root/syncParam/timeRange", "value", timeRange);
+            this.SetSingleAttr(xmlDoc, "root/syncParam/processRange", "value", processRange);
+            this.SetSingleAttr(xmlDoc, "root/syncParam/scheduleRange", "value", paibanRange);
             xmlDoc.Save(this.XMLPath);
             xmlDoc = null;
         }

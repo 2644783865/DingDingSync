@@ -40,6 +40,11 @@ namespace Conf
 
         private static DateTime _startDate; //开始时间
         private static int _interval; //间隔时间分钟
+        private static int _timerange;
+        private static int _processRange;
+        private static int _scheduleRange;
+
+        private static string[] _processCodes;
 
         #region 属性
 
@@ -121,6 +126,30 @@ namespace Conf
             set { _interval = value; }
         }
 
+        public static int TimeRange
+        {
+            get { return _timerange; }
+            set { _timerange = value; }
+        }
+
+        public static int ProcessRange
+        {
+            get { return _processRange; }
+            set { _processRange = value; }
+        }
+
+        public static int ScheduleRange
+        {
+            get { return _scheduleRange; }
+            set { _scheduleRange = value; }
+        }
+
+        public static string[] ProcessCodes
+        {
+            get { return _processCodes; }
+            set { _processCodes = value; }
+        }
+
         #endregion 属性
 
         #endregion 配置参数
@@ -129,6 +158,7 @@ namespace Conf
         public static bool Load()
         {
             bool retVal = false;
+            List<string> codes = new List<string>();
             XmlDocument xmlDoc = CreateXmlReader();
             if (xmlDoc != null)
             {
@@ -154,6 +184,17 @@ namespace Conf
                     //同步时间选项
                     StartDate = DateTime.Parse(string.IsNullOrEmpty(GetSingleAttr(xmlDoc, "root/syncParam/startTime[1]")) ? DateTime.Now.ToString() : GetSingleAttr(xmlDoc, "root/syncParam/startTime[1]"));
                     Interval = Convert.ToInt16(GetSingleAttr(xmlDoc, "root/syncParam/interval[1]"));
+                    TimeRange = Convert.ToInt16(GetSingleAttr(xmlDoc, "root/syncParam/timeRange[1]"));
+                    ProcessRange = Convert.ToInt16(GetSingleAttr(xmlDoc, "root/syncParam/processRange[1]"));
+                    ScheduleRange = Convert.ToInt16(GetSingleAttr(xmlDoc, "root/syncParam/scheduleRange[1]"));
+
+                    foreach (XmlNode node in xmlDoc.SelectNodes("root/processlist/process"))
+                    {
+                        codes.Add(node.Attributes["value"].Value);
+                    }
+
+                    ProcessCodes = codes.ToArray();
+
                     retVal = true;
                 }
                 catch (Exception e)

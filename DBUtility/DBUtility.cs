@@ -13,16 +13,17 @@ namespace DBTools
 {
     public class DBUtility
     {
-        private SqlConnection sqlConnection;//= new SqlConnection(Configuration.ConnectionString);
+        private SqlConnection sqlConnection;
         private DataSet dataSet = new DataSet();
 
         public DBUtility()
         {
             sqlConnection = new SqlConnection(Configuration.ConnectionString);
-            this.dataSet.Tables.Add("kq_source_ding");   //钉钉打卡原始数据表
-            this.dataSet.Tables.Add("kq_sourceqk_ding"); //钉钉签卡记录表
-            this.dataSet.Tables.Add("kq_paiban_ding");   //钉钉排班记录表
-            this.dataSet.Tables.Add("kq_process_ding");  //钉钉审批数据表
+            //this.dataSet.Tables.Add("ding_kq_source");   //钉钉打卡原始数据表
+            //this.dataSet.Tables.Add("ding_kq_sourceqk"); //钉钉签卡记录表
+            //this.dataSet.Tables.Add("ding_kq_paiban");   //钉钉排班记录表
+            //this.dataSet.Tables.Add("ding_kq_banzhi");   //钉钉考勤组
+            //this.dataSet.Tables.Add("ding_kq_process");  //钉钉审批数据表
         }
 
         //打开数据库连接
@@ -62,12 +63,9 @@ namespace DBTools
                         }
                     }
                 }
-                catch (Exception e)
+                catch
                 {
-                    using (FileStream fs = new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "error.log"), FileMode.Append))
-                    {
-                        fs.Write(Encoding.UTF8.GetBytes(e.Message + "\r\n"), 0, e.Message.Length);
-                    }
+                    throw;
                 }
             }
             return userids;
@@ -113,18 +111,52 @@ namespace DBTools
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
-                using (FileStream fs = new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "error.log"), FileMode.Append))
-                {
-                    fs.Write(Encoding.UTF8.GetBytes(e.Message + "\r\n"), 0, e.Message.Length);
-                }
+                throw;
             }
             return dt;
         }
 
-        public void Insert()
+        //将DataTable数据插入数据库
+        public void Insert(DataTable table)
         {
+            Dictionary<string, string> columnParam = new Dictionary<string, string>();
+            string sql = string.Empty;
+
+            foreach (DataColumn column in table.Columns)
+            {
+                columnParam.Add("@" + column.ColumnName, column.ColumnName);
+            }
+
+            sql = string.Format("insert into {0} ({1}) values({2})", table.TableName, string.Join(",", columnParam.Values.ToArray<string>()), string.Join(",", columnParam.Keys.ToArray<string>()));
+
+            try
+            {
+                using (sqlConnection)
+                {
+                    sqlConnection.Open();
+                    SqlCommand cmd = new SqlCommand(sql, sqlConnection);
+
+                    foreach (var kv in columnParam)
+                    {
+                        SqlParameter parameter = new SqlParameter(kv.Key, SqlDbType.VarChar, 100, kv.Value);
+                        cmd.Parameters.Add(parameter);
+                    }
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    adapter.InsertCommand = cmd;
+                    adapter.Update(table.GetChanges());
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
         }
 
         public void Delete(DataTable table)

@@ -1,0 +1,42 @@
+﻿CREATE TABLE ding_kq_paiban(
+	userid VARCHAR(10) NOT NULL,
+	plan_check_time VARCHAR(20) NOT NULL,
+	class_id VARCHAR(10) NOT NULL,
+	check_type VARCHAR(10) NOT NULL	
+)
+
+GO
+
+CREATE TABLE ding_kq_banzhi(
+	class_id VARCHAR(10) NOT NULL,
+	check_time_on VARCHAR(10) NOT NULL,
+	check_time_off VARCHAR(10) NOT NULL,
+	rest_begin_time VARCHAR(10) NULL,
+	rest_end_time VARCHAR(10) NULL,
+)
+
+GO
+
+CREATE TABLE [dbo].[ding_kq_source](
+	[gmtModified] [VARCHAR](20) NULL,
+	[baseCheckTime] [VARCHAR](20) NULL,
+	[groupId] [VARCHAR](15) NULL,
+	[timeResult] [VARCHAR](10) NULL,
+	[classId] [VARCHAR](10) NULL,
+	[workDate] [VARCHAR](20) NULL,
+	[planId] [VARCHAR](15) NULL,
+	[id] [VARCHAR](20) NULL,
+	[checkType] [VARCHAR](10) NULL,
+	[planCheckTime] [VARCHAR](20) NULL,
+	[corpId] [VARCHAR](30) NULL,
+	[locationResult] [VARCHAR](10) NULL,
+	[isLegal] [CHAR](1) NULL,
+	[gmtCreate] [VARCHAR](20) NULL,
+	[userId] [VARCHAR](10) NULL,
+	[userAddress] [VARCHAR](50) NULL,
+	[sourceType] [VARCHAR](10) NULL,
+	[userCheckTime] [VARCHAR](20) NULL,
+	[locationMethod] [VARCHAR](10) NULL
+) ON [PRIMARY]
+
+GO

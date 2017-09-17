@@ -56,62 +56,67 @@ namespace DataObject
 
     public class AttendListSchedule
     {
-        [JsonProperty(PropertyName = "dingtalk_smartwork_attends_listschedule_response")]
-        public AttendResponseResult RespResult { get; set; }
+        //[JsonProperty(PropertyName = "dingtalk_smartwork_attends_listschedule_response")]
+        public AttendScheduleResult dingtalk_smartwork_attends_listschedule_response { get; set; }
+    }
+
+    public class AttendScheduleResult
+    {
+        public AttendResponseResult result { get; set; }
     }
 
     public class AttendResponseResult
     {
         [JsonProperty(PropertyName = "ding_open_errcode")]
-        public int ErrorCode { get; set; }
+        public int ding_open_errcode { get; set; }
 
         [JsonProperty(PropertyName = "err_msg")]
-        public string ErrMsg { get; set; }
+        public string err_msg { get; set; }
 
         [JsonProperty(PropertyName = "success")]
-        public bool Success { get; set; }
+        public bool success { get; set; }
 
         [JsonProperty(PropertyName = "result")]
-        public AttentResult Result { get; set; }
+        public AttentResult result { get; set; }
     }
 
     public class AttentResult
     {
         [JsonProperty(PropertyName = "has_more")]
-        public bool Hasmore { get; set; }
+        public bool has_more { get; set; }
 
         [JsonProperty(PropertyName = "schedules")]
-        public AttendSchedules Schedules { get; set; }
+        public AttendSchedules schedules { get; set; }
     }
 
     public class AttendSchedules
     {
         [JsonProperty(PropertyName = "at_schedule_for_top_vo")]
-        public List<ResultDetail> ScheduleList { get; set; }
+        public List<ResultDetail> at_schedule_for_top_vo { get; set; }
     }
 
     public class ResultDetail
     {
         [JsonProperty(PropertyName = "group_id")]
-        public int GoupID { get; set; }
+        public int group_id { get; set; }
 
         [JsonProperty(PropertyName = "plan_check_time")]
-        public string PlanCheckTime { get; set; }
+        public string plan_check_time { get; set; }
 
         [JsonProperty(PropertyName = "class_id")]
-        public int ClassID { get; set; }
+        public int class_id { get; set; }
 
         [JsonProperty(PropertyName = "userid")]
-        public string UserID { get; set; }
+        public string userid { get; set; }
 
         [JsonProperty(PropertyName = "check_type")]
-        public string CheckType { get; set; }
+        public string check_type { get; set; }
 
         [JsonProperty(PropertyName = "class_setting_id")]
-        public int ClassSettingID { get; set; }
+        public int class_setting_id { get; set; }
 
         [JsonProperty(PropertyName = "approve_id")]
-        public int ApproveID { get; set; }
+        public int approve_id { get; set; }
     }
 
     #endregion 排班详情
@@ -201,15 +206,107 @@ namespace DataObject
     //        }
     //    }
     //}
-    public class AttendGroup { }
 
-    public class AttendGroupResopnse { }
+    public class AttendGroup
+    {
+        public AttendSimpleGroupResponse dingtalk_smartwork_attends_getsimplegroups_response { get; set; }
+    }
 
-    public class AttendGroupResponseResult { }
+    public class AttendSimpleGroupResponse
+    {
+        public AttendGroupResponse result { get; set; }
+        public string request_id { get; set; }
+    }
 
-    public class AttendGroupResponseResultList { }
+    public class AttendGroupResponse
+    {
+        public int ding_open_errcode { get; set; }
+        public AttendGroupResult result { get; set; }
+        public bool success { get; set; }
+    }
 
-    public class AttendGroupResultDetail { }
+    public class AttendGroupResult
+    {
+        public AttendGroupListForVo groups { get; set; }
+        public bool has_more { get; set; }
+    }
+
+    public class AttendGroupListForVo
+    {
+        public List<AttendGroupForTopVo> at_group_for_top_vo { get; set; }
+    }
+
+    public class AttendGroupForTopVo
+    {
+        public AttendRemark classes_list { get; set; }
+        public AttendRemark dept_name_list { get; set; }
+        public int group_id { get; set; }
+        public string group_name { get; set; }
+        public bool is_default { get; set; }
+        public AttendRemark manager_list { get; set; }
+        public int member_count { get; set; }
+        public AttendClassList selected_class { get; set; }
+        public string type { get; set; }
+        public AttendRemark work_day_list { get; set; }
+    }
+
+    public class AttendRemark
+    {
+        [JsonProperty(PropertyName = "string")]
+        public List<string> strings { get; set; }
+    }
+
+    public class AttendClassList
+    {
+        public List<AttendClassVo> at_class_vo { get; set; }
+    }
+
+    public class AttendClassVo
+    {
+        public int class_id { get; set; }
+        public string class_name { get; set; }
+        public ClassSettingVo setting { get; set; }
+        public AttendSectionsObject sections { get; set; }
+    }
+
+    public class ClassSettingVo
+    {
+        public int class_setting_id { get; set; }
+        public AttendTimeVo rest_begin_time { get; set; }
+        public int permit_late_minutes { get; set; }
+        public int work_time_minutes { get; set; }
+        public AttendTimeVo rest_end_time { get; set; }
+        public int absenteeism_late_minutes { get; set; }
+        public int serious_lat_minutes { get; set; }
+        public string is_off_duty { get; set; }
+    }
+
+    public class AttendSectionsObject
+    {
+        public List<AttendSectionVo> at_section_vo { get; set; }
+    }
+
+    public class AttendSections
+    {
+        public List<AttendSectionVo> at_section_vo { get; set; }
+    }
+
+    public class AttendSectionVo
+    {
+        public AttendTimes times { get; set; }
+    }
+
+    public class AttendTimes
+    {
+        public List<AttendTimeVo> at_time_vo { get; set; }
+    }
+
+    public class AttendTimeVo
+    {
+        public string check_time { get; set; }
+        public string check_type { get; set; }
+        public int across { get; set; }
+    }
 
     #endregion 考勤组
 
@@ -251,8 +348,7 @@ namespace DataObject
     {
         public string errmsg { get; set; }
 
-        [JsonProperty(PropertyName = "recordresult")]
-        public List<AttendResultDetail> results { get; set; }
+        public List<AttendResultDetail> recordresult { get; set; }
 
         public int errcode { get; set; }
     }
@@ -262,11 +358,12 @@ namespace DataObject
         public long gmtModified { get; set; }
         public string isLegal { get; set; }
         public long baseCheckTime { get; set; }
-        public int id { get; set; }
+        public long id { get; set; }
         public string userAddress { get; set; }
         public string userId { get; set; }
         public string checkType { get; set; }
         public string timeResult { get; set; }
+        public string classId { get; set; }
         public string deviceId { get; set; }
         public string corpId { get; set; }
         public string sourceType { get; set; }
@@ -276,16 +373,16 @@ namespace DataObject
         public string locationMethod { get; set; }
         public string locationResult { get; set; }
         public long userLongitude { get; set; }
-        public int planId { get; set; }
-        public int groupId { get; set; }
-        public int userAccuracy { get; set; }
+        public long planId { get; set; }
+        public long groupId { get; set; }
+        public long userAccuracy { get; set; }
         public long userCheckTime { get; set; }
         public double userLatitude { get; set; }
     }
 
     #endregion 考勤打卡记录
 
-    #region 签到记录
+    #region TopSDK签到记录
 
     /*签到记录结构示例
  {
@@ -362,7 +459,60 @@ namespace DataObject
         public List<string> images { get; set; }
     }
 
-    #endregion 签到记录
+    #endregion TopSDK签到记录
+
+    #region HTTPS签到记录
+
+    //json格式
+    //    {
+    //"errcode": 0,
+    //"errmsg": "ok",
+    //"data": [
+    //         {
+    //          "name": "xxx",
+    //          "userId": "xxx",
+    //          "timestamp": 1467300937000,
+    //          "avatar": "http://i01.lw.aliimg.com/media/lADOAGgal80Cyc0CyQ_713_713.jpg",
+    //          "place": "xxx",
+    //          "detailPlace": "xxx",
+    //          "remark": "",
+    //          "imageList": []
+    //},
+    //         {
+    //          "name": "xxx",
+    //          "userId": "xxx",
+    //          "timestamp": 1467300927000,
+    //          "avatar": "http://i01.lw.aliimg.com/media/lADOAGgal80Cyc0CyQ_713_713.jpg",
+    //          "place": "xxxx",
+    //          "detailPlace": "xxxx",
+    //          "remark": "",
+    //          "imageList": [
+    //                         "http://static.dingtalk.com/media/lADOU75g9M0ECs0C0A_720_1034.jpg"
+    //                       ]
+    //        }
+    //       ]
+    //}
+
+    public class HTTPCheckinResult
+    {
+        public int errcode { get; set; }
+        public string errmsg { get; set; }
+        public List<HTTPCheckinDetail> data { get; set; }
+    }
+
+    public class HTTPCheckinDetail
+    {
+        public string name { get; set; }
+        public string userId { get; set; }
+        public long timestamp { get; set; }
+        public string avatar { get; set; }
+        public string place { get; set; }
+        public string detailPlace { get; set; }
+        public string remark { get; set; }
+        public List<string> imageList { get; set; }
+    }
+
+    #endregion HTTPS签到记录
 
     #region 审批记录
 
@@ -416,14 +566,19 @@ namespace DataObject
 
     public class ProcessInstance
     {
-        public ProcessResponse dingtalk_smartwork_bpms_processinstance_list_response { get; set; }
+        public ProcessResponseTop dingtalk_smartwork_bpms_processinstance_list_response { get; set; }
+    }
+
+    public class ProcessResponseTop
+    {
+        public ProcessResponse result { get; set; }
+        public string request_id { get; set; }
     }
 
     public class ProcessResponse
     {
         public ProcessResponseResult result { get; set; }
         public int ding_open_errcode { get; set; }
-        public string error_msg { get; set; }
         public bool success { get; set; }
     }
 
@@ -467,7 +622,7 @@ namespace DataObject
 
     public class FormComponentValues
     {
-        public List<FormComponentValueVo> form_componet_value_vo { get; set; }
+        public List<FormComponentValueVo> form_component_value_vo { get; set; }
     }
 
     public class FormComponentValueVo

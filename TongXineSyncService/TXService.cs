@@ -58,7 +58,7 @@ namespace TongXineSyncService
 
         protected override void OnStop()
         {
-            Loger.log.Info(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\t服务已关闭");
+            //Loger.log.Info(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\t服务已关闭");
         }
     }
 }
