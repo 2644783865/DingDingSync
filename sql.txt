@@ -1,3 +1,11 @@
+CREATE TABLE ding_sync_error_log(
+	errCode INT ,
+	errProc VARCHAR(50),
+	errMsg VARCHAR(500),
+	errTime datetime
+    )
+
+
 CREATE TABLE ding_kq_paiban(
 	userid VARCHAR(100)  NULL,
 	plan_check_time VARCHAR(100)  NULL,

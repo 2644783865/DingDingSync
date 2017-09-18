@@ -20,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{3591CC89-1997-43F3-8CFA-8415998DB7F4}"
 	ProjectSection(SolutionItems) = preProject
 		sp_ding_banzhi_TX_sync.txt = sp_ding_banzhi_TX_sync.txt
+		sp_ding_source_tx_sync.txt = sp_ding_source_tx_sync.txt
 		sql.txt = sql.txt
 	EndProjectSection
 EndProject
