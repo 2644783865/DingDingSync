@@ -1,25 +1,67 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <remote>
-    <corpid value="1"></corpid>
-    <corpsecret value=""></corpsecret>
-    <token value=""></token>
+    <corpid value="rCHf9OSMFI2K8uz7QL8T6tPiy16n2nvH">
+    </corpid>
+    <corpsecret value="qmd2XStFs2pe1a8k7IoLy7RQ9zTpSMO4dpYi8A1Ctco5BjcSuOIuKpSP7+ZXn05w8u8zie3WI1KohM01AdbFqGxFCJALpyuv">
+    </corpsecret>
+    <token value="Wr6+WBjxyK+mQ/khL64gKUYwGRppTgMp1QviCdZXip08c6McxnL8kg==">
+    </token>
     <apis>
-      <schedule value=""></schedule>
-      <attendenceSource value=""></attendenceSource>
-      <attendenceSign value=""></attendenceSign>
-      <auditResult value=""></auditResult>
+      <schedule value="0">
+      </schedule>
+      <group value="1">
+      </group>
+      <attendenceSource value="0">
+      </attendenceSource>
+      <attendenceSign value="0">
+      </attendenceSign>
+      <auditResult value="0">
+      </auditResult>
     </apis>
   </remote>
   <localConnection>
-    <server value=""></server>
-    <user value=""></user>
-    <password value=""></password>
-    <database value=""></database>
-    <connectionString value=""></connectionString>
+    <server value="localhost">
+    </server>
+    <user value="sa">
+    </user>
+    <password value="c48m7/9bY0DgIIHnCY6OsQ==">
+    </password>
+    <database value="txcard_mro">
+    </database>
+    <connectionString value="eIp5nIiATyVyw3t+eHAIl6zjv8gPok/RvNbhMqddAr+Pnlb0fw/+fwTS7vNNKb+ZQBpBa4JFHhrW6wK3wOuzPavKyyKqobOsvOFzAx8k0pulHIS/KBxH6BvwVoGIWhuynu8vi+JrDPVsupCYg6uuuA==">
+    </connectionString>
   </localConnection>
+  <!--审批表单PROC-CODE-->
+  <processlist>
+    <process value="PROC-EF6Y0XWVO2-G9V86X7WTPW7H08EOY822-VSHNLULI-C9">
+    </process>
+    <process value="PROC-EF6YCS6WO2-N7V82TM5QHUPJ1V37G5O2-IVKYNULI-NF">
+    </process>
+    <process value="PROC-EF6Y0XWVO2-G9V86X7WTPW7H08EOY822-4UHNLULI-F9">
+    </process>
+    <process value="PROC-EF6Y0XWVO2-G9V86X7WTPW7H08EOY822-PTHNLULI-E9">
+    </process>
+    <process value="PROC-EF6YNNYRN2-V05F59C8ORH1X378ED812-L0Q2AQUI-CK">
+    </process>
+  </processlist>
+  <!--原始数据处理存储过程 不带参数-->
+  <procedureList>
+    <proc value="sp_ding_source_tx_sync"></proc>
+    <proc value=""></proc>
+    <proc value=""></proc>
+    <proc value=""></proc>
+  </procedureList>
   <syncParam>
-    <startTime value=""></startTime>
-    <interval value=""></interval>
+    <startTime value="2017/9/15 0:56:00">
+    </startTime>
+    <interval value="2">
+    </interval>
+    <timeRange value="12">
+    </timeRange>
+    <processRange value="10">
+    </processRange>
+    <scheduleRange value="1">
+    </scheduleRange>
   </syncParam>
 </root>

@@ -1,21 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using System.IO;
 using System.Threading;
-using System.Data.SqlClient;
-
-using Log_Easy;
 using Operation;
 using Conf;
-using DBTools;
-using Newtonsoft.Json;
-using DataObject;
 
 namespace TongXineSyncService
 {

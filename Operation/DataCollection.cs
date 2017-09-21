@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.IO;
-using System.Web;
 using System.Net;
 using System.Data;
-using System.Threading;
 
 using DataObject;
 using Conf;
@@ -236,19 +233,6 @@ namespace Operation
                     outBlock = Encoding.UTF8.GetBytes(sr.ReadToEnd());
                 }
 
-                //IDingTalkClient client = new DefaultDingTalkClient(CheckinRecordURI);
-                //SmartworkCheckinRecordGetRequest req = new SmartworkCheckinRecordGetRequest
-                //{
-                //    UseridList = string.Join(",", userids),
-                //    StartTime = startTimespan.Milliseconds,
-                //    EndTime = endTimespan.Milliseconds,
-                //    Cursor = cursor,
-                //    Size = size
-                //};
-                //SmartworkCheckinRecordGetResponse response = client.Execute(req, _Token);
-                //string content = response.Body;
-                //byte[] outBlock = Encoding.UTF8.GetBytes(content);
-
                 using (FileStream fs = new FileStream(GetDataPath(string.Format(@"CheckinResult{0}.json", DateTime.Now.ToString("yyyyMMddHHmmssfff"))), FileMode.Create))
                 {
                     fs.Write(outBlock, 0, outBlock.Length);
@@ -302,32 +286,6 @@ namespace Operation
                     fs.Write(msg.bMsg, 0, msg.Length);
                 }
             }
-        }
-
-        //批量执行打卡记录、签到数据、、审批数据
-        public static void GetMinuteResultCollection(object obj)
-        {
-            try
-            {
-                ProcessResultData();
-                ProcessGroupData();
-                ProcessScheudleListData();
-                ProcessCheckinData();
-                ProcessInstanceData();
-            }
-            catch (Exception ex)
-            {
-                using (FileStream fs = new FileStream(GetDataPath("Error", "error.log"), FileMode.Append))
-                {
-                    Message msg = new Message(ex.Message);
-                    fs.Write(msg.bMsg, 0, msg.Length);
-                }
-            }
-        }
-
-        //批量执行排班记录
-        public static void GetDayResultCollection(object obj)
-        {
         }
 
         //从AttendGroup文件读数据到DB 并返回json分页标识
@@ -816,6 +774,56 @@ namespace Operation
         }
 
         #endregion 数据文件处理
+
+        //批量执行打卡记录、签到数据、、审批数据
+        public static void GetMinuteResultCollection(object obj)
+        {
+            try
+            {
+                if (Configuration.AttendenceSource)
+                {
+                    ProcessResultData();
+                }
+                if (Configuration.Group)
+                {
+                    ProcessGroupData();
+                }
+                if (Configuration.Schedule)
+                {
+                    ProcessScheudleListData();
+                }
+                if (Configuration.AttendenceSign)
+                {
+                    ProcessCheckinData();
+                }
+                if (Configuration.AuditResult)
+                {
+                    ProcessInstanceData();
+                }
+
+                foreach (string proc in Configuration.Procedures)
+                {
+                    if (!string.IsNullOrEmpty(proc))
+                    {
+                        DBUtility db = new DBUtility();
+                        db.ExecuteProc(proc);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                using (FileStream fs = new FileStream(GetDataPath("Error", "error.log"), FileMode.Append))
+                {
+                    Message msg = new Message(ex.Message);
+                    fs.Write(msg.bMsg, 0, msg.Length);
+                }
+            }
+        }
+
+        //批量执行排班记录
+        public static void GetDayResultCollection(object obj)
+        {
+        }
     }
 
     internal class Message

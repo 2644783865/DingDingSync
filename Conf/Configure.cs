@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.IO;
 
@@ -32,6 +29,7 @@ namespace Conf
         //同步内容参数
 
         private static bool _schedule;         //考勤排班记录
+        private static bool _group;            //考勤班制记录
         private static bool _attendenceSource; //考勤打卡记录
         private static bool _attendenceSign;   //考勤签到记录
         private static bool _auditResult;      //审批记录
@@ -45,6 +43,7 @@ namespace Conf
         private static int _scheduleRange;
 
         private static string[] _processCodes;
+        private static string[] _procedures;
 
         #region 属性
 
@@ -94,6 +93,12 @@ namespace Conf
         {
             get { return _schedule; }
             set { _schedule = value; }
+        }
+
+        public static bool Group
+        {
+            get { return _group; }
+            set { _group = value; }
         }
 
         public static bool AttendenceSource
@@ -150,6 +155,12 @@ namespace Conf
             set { _processCodes = value; }
         }
 
+        public static string[] Procedures
+        {
+            get { return _procedures; }
+            set { _procedures = value; }
+        }
+
         #endregion 属性
 
         #endregion 配置参数
@@ -159,6 +170,7 @@ namespace Conf
         {
             bool retVal = false;
             List<string> codes = new List<string>();
+            List<string> proc = new List<string>();
             XmlDocument xmlDoc = CreateXmlReader();
             if (xmlDoc != null)
             {
@@ -180,6 +192,7 @@ namespace Conf
                     AttendenceSource = GetSingleAttr(xmlDoc, "root/remote/apis/attendenceSource[1]") == "1" ? true : false;
                     AttendenceSign = GetSingleAttr(xmlDoc, "root/remote/apis/attendenceSign[1]") == "1" ? true : false;
                     AuditResult = GetSingleAttr(xmlDoc, "root/remote/apis/auditResult[1]") == "1" ? true : false;
+                    Group = GetSingleAttr(xmlDoc, "root/remote/apis/group[1]") == "1" ? true : false;
 
                     //同步时间选项
                     StartDate = DateTime.Parse(string.IsNullOrEmpty(GetSingleAttr(xmlDoc, "root/syncParam/startTime[1]")) ? DateTime.Now.ToString() : GetSingleAttr(xmlDoc, "root/syncParam/startTime[1]"));
@@ -194,6 +207,13 @@ namespace Conf
                     }
 
                     ProcessCodes = codes.ToArray();
+
+                    foreach (XmlNode node in xmlDoc.SelectNodes("root/procedureList/proc"))
+                    {
+                        proc.Add(node.Attributes["value"].Value);
+                    }
+
+                    Procedures = proc.ToArray();
 
                     retVal = true;
                 }

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
-using System.IO;
 
 using Conf;
 
@@ -19,11 +15,6 @@ namespace DBTools
         public DBUtility()
         {
             sqlConnection = new SqlConnection(Configuration.ConnectionString);
-            //this.dataSet.Tables.Add("ding_kq_source");   //钉钉打卡原始数据表
-            //this.dataSet.Tables.Add("ding_kq_sourceqk"); //钉钉签卡记录表
-            //this.dataSet.Tables.Add("ding_kq_paiban");   //钉钉排班记录表
-            //this.dataSet.Tables.Add("ding_kq_banzhi");   //钉钉考勤组
-            //this.dataSet.Tables.Add("ding_kq_process");  //钉钉审批数据表
         }
 
         //打开数据库连接
@@ -140,7 +131,7 @@ namespace DBTools
 
                     foreach (var kv in columnParam)
                     {
-                        SqlParameter parameter = new SqlParameter(kv.Key, SqlDbType.VarChar, 100, kv.Value);
+                        SqlParameter parameter = new SqlParameter(kv.Key, SqlDbType.VarChar, 1024 * 3, kv.Value);
                         cmd.Parameters.Add(parameter);
                     }
 
@@ -157,14 +148,33 @@ namespace DBTools
             {
                 sqlConnection.Close();
             }
+            return;
         }
 
         public void Delete(DataTable table)
         {
         }
 
-        public void ExecuteProc(string procName, Dictionary<string, string> param)
+        public void ExecuteProc(string procName)
         {
+            try
+            {
+                using (sqlConnection)
+                {
+                    sqlConnection.Open();
+                    SqlCommand cmd = new SqlCommand(procName, sqlConnection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
         }
     }
 }

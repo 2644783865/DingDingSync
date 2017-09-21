@@ -27,6 +27,7 @@ namespace DingDingSync
 
             //注册checkBox CheckedChanged事件
             this.chbKqPanBan.CheckedChanged += new System.EventHandler(this.chbKqPanBan_CheckedChanged);
+            this.chbBanzhi.CheckedChanged += new System.EventHandler(this.chbBanzhi_CheckedChanged);
             this.chbKqSource.CheckedChanged += new System.EventHandler(this.chbKqSource_CheckedChanged);
             this.chbKqSign.CheckedChanged += new System.EventHandler(this.chbKqSign_CheckedChanged);
             this.chbWFResult.CheckedChanged += new System.EventHandler(this.chbWFResult_CheckedChanged);
@@ -157,6 +158,7 @@ namespace DingDingSync
                 this.tbDataBase.Text = GetSingleAttr(xmlDoc, "root/localConnection/database[1]");
 
                 this.chbKqPanBan.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/schedule[1]") == "1" ? true : false;
+                this.chbBanzhi.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/group[1]") == "1" ? true : false;
                 this.chbKqSource.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/attendenceSource[1]") == "1" ? true : false;
                 this.chbKqSign.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/attendenceSign[1]") == "1" ? true : false;
                 this.chbWFResult.Checked = GetSingleAttr(xmlDoc, "root/remote/apis/auditResult[1]") == "1" ? true : false;
@@ -312,8 +314,12 @@ namespace DingDingSync
             Token token = JsonConvert.DeserializeObject<Token>(retJson);
             if (token.errorcode == 0 && token.errmsg == "ok")
             {
-                MessageBox.Show("Token获取成功");
                 this.tbToken.Text = token.access_token;
+                MessageBox.Show(string.Format("Token获取成功\r\n {0}{1}{2}", this.tbToken.Text.Substring(0, 5), "*********************", this.tbToken.Text.Substring(this.tbToken.Text.Length - 6)));
+            }
+            else
+            {
+                MessageBox.Show("Token获取失败");
             }
         }
 
@@ -405,6 +411,15 @@ namespace DingDingSync
             string val = this.chbKqSign.CheckState == CheckState.Checked ? "1" : "0";
             XmlDocument xmlDoc = CreateXmlReader();
             this.SetSingleAttr(xmlDoc, "root/remote/apis/attendenceSign", "value", val);
+            xmlDoc.Save(this.XMLPath);
+            xmlDoc = null;
+        }
+
+        private void chbBanzhi_CheckedChanged(object sender, EventArgs e)
+        {
+            string val = this.chbBanzhi.CheckState == CheckState.Checked ? "1" : "0";
+            XmlDocument xmlDoc = CreateXmlReader();
+            this.SetSingleAttr(xmlDoc, "root/remote/apis/group", "value", val);
             xmlDoc.Save(this.XMLPath);
             xmlDoc = null;
         }

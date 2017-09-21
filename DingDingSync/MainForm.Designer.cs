@@ -51,6 +51,10 @@
             this.lbUser = new System.Windows.Forms.Label();
             this.lbServer = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chbBanzhi = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbPaiban = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.tbProcessRange = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -76,9 +80,6 @@
             this.lbRunInfo = new System.Windows.Forms.Label();
             this.btnInstallService = new System.Windows.Forms.Button();
             this.btnUninstallService = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tbPaiban = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -281,6 +282,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.chbBanzhi);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.tbPaiban);
             this.groupBox3.Controls.Add(this.label6);
@@ -302,15 +304,50 @@
             this.groupBox3.Controls.Add(this.chbKqPanBan);
             this.groupBox3.Location = new System.Drawing.Point(296, 13);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(322, 306);
+            this.groupBox3.Size = new System.Drawing.Size(369, 342);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "同步参数";
+            this.groupBox3.Text = "参数设置";
+            // 
+            // chbBanzhi
+            // 
+            this.chbBanzhi.AutoSize = true;
+            this.chbBanzhi.Location = new System.Drawing.Point(159, 34);
+            this.chbBanzhi.Name = "chbBanzhi";
+            this.chbBanzhi.Size = new System.Drawing.Size(98, 17);
+            this.chbBanzhi.TabIndex = 21;
+            this.chbBanzhi.Text = "考勤班制记录";
+            this.chbBanzhi.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(254, 263);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(19, 13);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "天";
+            // 
+            // tbPaiban
+            // 
+            this.tbPaiban.Location = new System.Drawing.Point(135, 259);
+            this.tbPaiban.Name = "tbPaiban";
+            this.tbPaiban.Size = new System.Drawing.Size(113, 20);
+            this.tbPaiban.TabIndex = 19;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(50, 262);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(79, 13);
+            this.label6.TabIndex = 18;
+            this.label6.Text = "排班数据范围";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(207, 153);
+            this.label4.Location = new System.Drawing.Point(254, 226);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(19, 13);
             this.label4.TabIndex = 17;
@@ -318,7 +355,7 @@
             // 
             // tbProcessRange
             // 
-            this.tbProcessRange.Location = new System.Drawing.Point(88, 149);
+            this.tbProcessRange.Location = new System.Drawing.Point(135, 222);
             this.tbProcessRange.Name = "tbProcessRange";
             this.tbProcessRange.Size = new System.Drawing.Size(113, 20);
             this.tbProcessRange.TabIndex = 16;
@@ -326,7 +363,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 152);
+            this.label5.Location = new System.Drawing.Point(50, 225);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(79, 13);
             this.label5.TabIndex = 15;
@@ -335,7 +372,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(207, 118);
+            this.label3.Location = new System.Drawing.Point(254, 191);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(31, 13);
             this.label3.TabIndex = 14;
@@ -343,7 +380,7 @@
             // 
             // tbTimeRange
             // 
-            this.tbTimeRange.Location = new System.Drawing.Point(88, 114);
+            this.tbTimeRange.Location = new System.Drawing.Point(135, 187);
             this.tbTimeRange.Name = "tbTimeRange";
             this.tbTimeRange.Size = new System.Drawing.Size(113, 20);
             this.tbTimeRange.TabIndex = 13;
@@ -351,7 +388,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 117);
+            this.label2.Location = new System.Drawing.Point(50, 190);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(79, 13);
             this.label2.TabIndex = 12;
@@ -359,7 +396,7 @@
             // 
             // btnSetSchedule
             // 
-            this.btnSetSchedule.Location = new System.Drawing.Point(116, 240);
+            this.btnSetSchedule.Location = new System.Drawing.Point(135, 293);
             this.btnSetSchedule.Name = "btnSetSchedule";
             this.btnSetSchedule.Size = new System.Drawing.Size(75, 23);
             this.btnSetSchedule.TabIndex = 11;
@@ -370,7 +407,7 @@
             // lbMinute
             // 
             this.lbMinute.AutoSize = true;
-            this.lbMinute.Location = new System.Drawing.Point(207, 80);
+            this.lbMinute.Location = new System.Drawing.Point(254, 153);
             this.lbMinute.Name = "lbMinute";
             this.lbMinute.Size = new System.Drawing.Size(31, 13);
             this.lbMinute.TabIndex = 10;
@@ -380,14 +417,14 @@
             // 
             this.dateTimePicker1.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(88, 42);
+            this.dateTimePicker1.Location = new System.Drawing.Point(135, 115);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(150, 20);
             this.dateTimePicker1.TabIndex = 9;
             // 
             // tbInterval
             // 
-            this.tbInterval.Location = new System.Drawing.Point(88, 77);
+            this.tbInterval.Location = new System.Drawing.Point(135, 150);
             this.tbInterval.Name = "tbInterval";
             this.tbInterval.Size = new System.Drawing.Size(113, 20);
             this.tbInterval.TabIndex = 8;
@@ -395,7 +432,7 @@
             // lbInterval
             // 
             this.lbInterval.AutoSize = true;
-            this.lbInterval.Location = new System.Drawing.Point(3, 80);
+            this.lbInterval.Location = new System.Drawing.Point(50, 153);
             this.lbInterval.Name = "lbInterval";
             this.lbInterval.Size = new System.Drawing.Size(79, 13);
             this.lbInterval.TabIndex = 7;
@@ -404,7 +441,7 @@
             // lbStartTime
             // 
             this.lbStartTime.AutoSize = true;
-            this.lbStartTime.Location = new System.Drawing.Point(3, 46);
+            this.lbStartTime.Location = new System.Drawing.Point(50, 119);
             this.lbStartTime.Name = "lbStartTime";
             this.lbStartTime.Size = new System.Drawing.Size(79, 13);
             this.lbStartTime.TabIndex = 6;
@@ -413,48 +450,42 @@
             // chbWFResult
             // 
             this.chbWFResult.AutoSize = true;
-            this.chbWFResult.Location = new System.Drawing.Point(98, 19);
+            this.chbWFResult.Location = new System.Drawing.Point(159, 72);
             this.chbWFResult.Name = "chbWFResult";
             this.chbWFResult.Size = new System.Drawing.Size(74, 17);
             this.chbWFResult.TabIndex = 3;
             this.chbWFResult.Text = "审批记录";
             this.chbWFResult.UseVisualStyleBackColor = true;
-            this.chbWFResult.Visible = false;
             // 
             // chbKqSign
             // 
             this.chbKqSign.AutoSize = true;
-            this.chbKqSign.Location = new System.Drawing.Point(140, 19);
+            this.chbKqSign.Location = new System.Drawing.Point(53, 72);
             this.chbKqSign.Name = "chbKqSign";
             this.chbKqSign.Size = new System.Drawing.Size(98, 17);
             this.chbKqSign.TabIndex = 2;
             this.chbKqSign.Text = "考勤签到记录";
             this.chbKqSign.UseVisualStyleBackColor = true;
-            this.chbKqSign.Visible = false;
-            this.chbKqSign.CheckedChanged += new System.EventHandler(this.chbKqSign_CheckedChanged);
             // 
             // chbKqSource
             // 
             this.chbKqSource.AutoSize = true;
-            this.chbKqSource.Location = new System.Drawing.Point(45, 19);
+            this.chbKqSource.Location = new System.Drawing.Point(263, 34);
             this.chbKqSource.Name = "chbKqSource";
             this.chbKqSource.Size = new System.Drawing.Size(98, 17);
             this.chbKqSource.TabIndex = 1;
             this.chbKqSource.Text = "考勤打卡记录";
             this.chbKqSource.UseVisualStyleBackColor = true;
-            this.chbKqSource.Visible = false;
             // 
             // chbKqPanBan
             // 
             this.chbKqPanBan.AutoSize = true;
-            this.chbKqPanBan.Location = new System.Drawing.Point(7, 19);
+            this.chbKqPanBan.Location = new System.Drawing.Point(55, 34);
             this.chbKqPanBan.Name = "chbKqPanBan";
             this.chbKqPanBan.Size = new System.Drawing.Size(98, 17);
             this.chbKqPanBan.TabIndex = 0;
             this.chbKqPanBan.Text = "考勤排班记录";
             this.chbKqPanBan.UseVisualStyleBackColor = true;
-            this.chbKqPanBan.Visible = false;
-            this.chbKqPanBan.CheckedChanged += new System.EventHandler(this.chbKqPanBan_CheckedChanged);
             // 
             // notifyIcon_Service
             // 
@@ -488,7 +519,7 @@
             // 
             // btnRunSvc
             // 
-            this.btnRunSvc.Location = new System.Drawing.Point(481, 374);
+            this.btnRunSvc.Location = new System.Drawing.Point(478, 380);
             this.btnRunSvc.Name = "btnRunSvc";
             this.btnRunSvc.Size = new System.Drawing.Size(75, 23);
             this.btnRunSvc.TabIndex = 3;
@@ -498,7 +529,7 @@
             // 
             // btnStopSvc
             // 
-            this.btnStopSvc.Location = new System.Drawing.Point(481, 403);
+            this.btnStopSvc.Location = new System.Drawing.Point(559, 381);
             this.btnStopSvc.Name = "btnStopSvc";
             this.btnStopSvc.Size = new System.Drawing.Size(75, 23);
             this.btnStopSvc.TabIndex = 4;
@@ -511,14 +542,14 @@
             this.lbRunInfo.AutoSize = true;
             this.lbRunInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbRunInfo.ForeColor = System.Drawing.Color.Red;
-            this.lbRunInfo.Location = new System.Drawing.Point(299, 447);
+            this.lbRunInfo.Location = new System.Drawing.Point(312, 431);
             this.lbRunInfo.Name = "lbRunInfo";
             this.lbRunInfo.Size = new System.Drawing.Size(0, 24);
             this.lbRunInfo.TabIndex = 6;
             // 
             // btnInstallService
             // 
-            this.btnInstallService.Location = new System.Drawing.Point(355, 374);
+            this.btnInstallService.Location = new System.Drawing.Point(316, 380);
             this.btnInstallService.Name = "btnInstallService";
             this.btnInstallService.Size = new System.Drawing.Size(75, 23);
             this.btnInstallService.TabIndex = 7;
@@ -528,7 +559,7 @@
             // 
             // btnUninstallService
             // 
-            this.btnUninstallService.Location = new System.Drawing.Point(355, 402);
+            this.btnUninstallService.Location = new System.Drawing.Point(397, 381);
             this.btnUninstallService.Name = "btnUninstallService";
             this.btnUninstallService.Size = new System.Drawing.Size(75, 23);
             this.btnUninstallService.TabIndex = 8;
@@ -536,36 +567,11 @@
             this.btnUninstallService.UseVisualStyleBackColor = true;
             this.btnUninstallService.Click += new System.EventHandler(this.btnUninstallService_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(207, 190);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(19, 13);
-            this.label1.TabIndex = 20;
-            this.label1.Text = "天";
-            // 
-            // tbPaiban
-            // 
-            this.tbPaiban.Location = new System.Drawing.Point(88, 186);
-            this.tbPaiban.Name = "tbPaiban";
-            this.tbPaiban.Size = new System.Drawing.Size(113, 20);
-            this.tbPaiban.TabIndex = 19;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 189);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(79, 13);
-            this.label6.TabIndex = 18;
-            this.label6.Text = "排班数据范围";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(633, 484);
+            this.ClientSize = new System.Drawing.Size(683, 466);
             this.Controls.Add(this.btnUninstallService);
             this.Controls.Add(this.btnInstallService);
             this.Controls.Add(this.lbRunInfo);
@@ -643,6 +649,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbPaiban;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox chbBanzhi;
     }
 }
 

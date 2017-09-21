@@ -64,16 +64,16 @@ CREATE TABLE ding_kq_checkin(
 GO
 
 CREATE TABLE ding_kq_process_instance(
-	process_instance_id VARCHAR(100) NOT NULL,
-	title VARCHAR(100) NULL,
-	create_time VARCHAR(100) NOT NULL,
-	finish_time VARCHAR(100)  NULL,
-	originator_userid VARCHAR(100)  NULL,
-	originator_dept_id VARCHAR(100) NULL,
-	status VARCHAR(100)  NULL,
-	form_vo_name VARCHAR(100) NULL,
-	form_vo_value VARCHAR(100) NULL,
-	process_instance_result varchar(100)  NULL,
+	process_instance_id VARCHAR(500) NOT NULL,
+	title VARCHAR(500) NULL,
+	create_time VARCHAR(500) NOT NULL,
+	finish_time VARCHAR(500)  NULL,
+	originator_userid VARCHAR(500)  NULL,
+	originator_dept_id VARCHAR(500) NULL,
+	status VARCHAR(500)  NULL,
+	form_vo_name VARCHAR(500) NULL,
+	form_vo_value VARCHAR(500) NULL,
+	process_instance_result varchar(500)  NULL,
 )
 GO
 

@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DingDingSync", "DingDingSync\DingDingSync.csproj", "{1B4BDBC9-5F09-4879-A4BE-308F2DFB4E32}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D7F6FD7D-605D-432C-86CE-F84D29BF6219} = {D7F6FD7D-605D-432C-86CE-F84D29BF6219}
+		{11DA1BB4-DCB4-46A3-9EF4-156C953A0227} = {11DA1BB4-DCB4-46A3-9EF4-156C953A0227}
+		{7356CCC9-5706-4193-9693-DFC4C6448131} = {7356CCC9-5706-4193-9693-DFC4C6448131}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TongXineSyncService", "TongXineSyncService\TongXineSyncService.csproj", "{E32EAC5B-7BB8-449D-A21A-42598A98DCEC}"
 EndProject

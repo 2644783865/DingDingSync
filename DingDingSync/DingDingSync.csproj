@@ -57,6 +57,9 @@
     <ApplicationIcon>008_Reminder.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="InstallUtil">
+      <HintPath>bin\x86\Release\InstallUtil.exe</HintPath>
+    </Reference>
     <Reference Include="Log Easy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Log.Easy.1.0.0\lib\Log Easy.dll</HintPath>
     </Reference>
@@ -115,6 +118,7 @@
     <Content Include="008_Reminder.ico" />
     <Content Include="ServiceSetting.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
