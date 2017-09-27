@@ -22,13 +22,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conf", "Conf\Conf.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBUtility", "DBUtility\DBUtility.csproj", "{11DA1BB4-DCB4-46A3-9EF4-156C953A0227}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{3591CC89-1997-43F3-8CFA-8415998DB7F4}"
-	ProjectSection(SolutionItems) = preProject
-		sp_ding_banzhi_TX_sync.txt = sp_ding_banzhi_TX_sync.txt
-		sp_ding_source_tx_sync.txt = sp_ding_source_tx_sync.txt
-		sql.txt = sql.txt
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

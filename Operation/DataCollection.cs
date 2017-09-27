@@ -9,6 +9,7 @@ using DataObject;
 using Conf;
 using DBTools;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using DingTalk.Api;
 using DingTalk.Api.Request;
 using DingTalk.Api.Response;
@@ -480,6 +481,7 @@ namespace Operation
             table.Columns.Add("class_setting_id");
             table.Columns.Add("plan_check_time");
             table.Columns.Add("userid");
+            table.Columns.Add("approve_id");
 
             List<ResultDetail> recordresult = group.dingtalk_smartwork_attends_listschedule_response.result.result.schedules.at_schedule_for_top_vo;
 
@@ -492,6 +494,14 @@ namespace Operation
                 dr["class_setting_id"] = result.class_setting_id;
                 dr["plan_check_time"] = result.plan_check_time;
                 dr["userid"] = result.userid;
+                try
+                {
+                    dr["approve_id"] = result.approve_id;
+                }
+                catch
+                {
+                    dr["approve_id"] = "0";
+                }
 
                 table.Rows.Add(dr);
             }
@@ -602,6 +612,12 @@ namespace Operation
             table.Columns.Add("form_vo_name");
             table.Columns.Add("form_vo_value");
             table.Columns.Add("process_instance_result");
+            table.Columns.Add("begin_time");
+            table.Columns.Add("end_time");
+            table.Columns.Add("hours");
+            table.Columns.Add("unit");
+            table.Columns.Add("form_type");
+            table.Columns.Add("instance_type");
 
             List<ResultList> resultlist = group.dingtalk_smartwork_bpms_processinstance_list_response.result.result.list.process_instance_top_vo;
 
@@ -624,6 +640,37 @@ namespace Operation
                 dr["form_vo_name"] = result.form_component_values.form_component_value_vo[0].name;
                 dr["form_vo_value"] = result.form_component_values.form_component_value_vo[0].value;
                 dr["process_instance_result"] = result.process_instance_result;
+                if (dr["title"].ToString().Contains(@"请假") || dr["title"].ToString().Contains(@"加班") || dr["title"].ToString().Contains(@"外出"))
+                {
+                    JArray jArray = JArray.Parse(result.form_component_values.form_component_value_vo[0].value);
+                    dr["begin_time"] = jArray[0].ToObject<string>();
+                    dr["end_time"] = jArray[1].ToObject<string>();
+                    dr["hours"] = jArray[2].ToObject<string>();
+                    dr["unit"] = jArray[3].ToObject<string>();
+                    dr["form_type"] = jArray[4].ToObject<string>();
+                    dr["instance_type"] = jArray[5].ToObject<string>();
+                }
+                else if (dr["title"].ToString().Contains(@"出差"))
+                {
+                    JArray jArray = JArray.Parse(result.form_component_values.form_component_value_vo[0].value);
+                    //JObject obj = jArray[0][1].ToObject<JObject>();
+                    //List<string> array = obj.Value<List<string>>("value");
+                    dr["begin_time"] = jArray[0][1]["value"][0];
+                    dr["end_time"] = jArray[0][1]["value"][1];
+                    dr["hours"] = jArray[0][1]["value"][2];
+                    dr["unit"] = jArray[0][1]["value"][3];
+                    dr["form_type"] = jArray[0][1]["value"][4];
+                    dr["instance_type"] = jArray[0][1]["value"][5];
+                }
+                else
+                {
+                    dr["begin_time"] = "";
+                    dr["end_time"] = "";
+                    dr["hours"] = "";
+                    dr["unit"] = "";
+                    dr["form_type"] = "";
+                    dr["instance_type"] = "";
+                }
 
                 table.Rows.Add(dr);
             }
@@ -746,7 +793,7 @@ namespace Operation
                 while (ReadScheduleListJsonData())
                 {
                     offset += 200;
-                    GetScheduleList(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), Configuration.CorpID, Configuration.CorpSecret, offset, 200);
+                    GetScheduleList(work_date.ToString("yyyy-MM-dd HH:mm:ss"), Configuration.CorpID, Configuration.CorpSecret, offset, 200);
                 }
             }
         }

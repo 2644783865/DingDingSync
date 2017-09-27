@@ -632,4 +632,16 @@ namespace DataObject
     }
 
     #endregion 审批记录
+
+    #region 审批中的出差表单
+
+    public class Biztrip
+    {
+        public string extendValue { get; set; }
+        public List<string> label { get; set; }
+        public List<string> value { get; set; }
+        public string key { get; set; }
+    }
+
+    #endregion 审批中的出差表单
 }
