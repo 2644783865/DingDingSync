@@ -3,33 +3,33 @@
   <remote>
     <corpid value="rCHf9OSMFI2K8uz7QL8T6tPiy16n2nvH">
     </corpid>
-    <corpsecret value="qmd2XStFs2pe1a8k7IoLy7RQ9zTpSMO4dpYi8A1Ctco5BjcSuOIuKpSP7+ZXn05w8u8zie3WI1KohM01AdbFqGxFCJALpyuv">
+    <corpsecret value="">
     </corpsecret>
-    <token value="Wr6+WBjxyK+mQ/khL64gKUYwGRppTgMp1QviCdZXip08c6McxnL8kg==">
+    <token value="iLzP53nAcmbtycdZte6OHq+ICUVcyluOtGDiUbld/TbtI3ZJFhhGYA==">
     </token>
     <apis>
       <schedule value="0">
       </schedule>
-      <group value="1">
+      <group value="0">
       </group>
       <attendenceSource value="0">
       </attendenceSource>
       <attendenceSign value="0">
       </attendenceSign>
-      <auditResult value="0">
+      <auditResult value="1">
       </auditResult>
     </apis>
   </remote>
   <localConnection>
-    <server value="localhost">
+    <server value="192.168.1.40">
     </server>
     <user value="sa">
     </user>
-    <password value="c48m7/9bY0DgIIHnCY6OsQ==">
+    <password value="PDcBegMExNKuU4SLo3mIKg==">
     </password>
-    <database value="txcard_mro">
+    <database value="txcard">
     </database>
-    <connectionString value="eIp5nIiATyVyw3t+eHAIl6zjv8gPok/RvNbhMqddAr+Pnlb0fw/+fwTS7vNNKb+ZQBpBa4JFHhrW6wK3wOuzPavKyyKqobOsvOFzAx8k0pulHIS/KBxH6BvwVoGIWhuynu8vi+JrDPVsupCYg6uuuA==">
+    <connectionString value="eIp5nIiATyXErH1QvrXlm+rqpVwnW6xLfAAK6djYhM/ruf87wVvv/SmZEDUfUWe6vRnQbcx0gUL+QJ/aACbKAkmShaYfZgSbJj7uX7EMU2aVTZstfvCWvl0CMLGWuCln2NT/qTXjhmE=">
     </connectionString>
   </localConnection>
   <!--审批表单PROC-CODE-->
@@ -47,21 +47,25 @@
   </processlist>
   <!--原始数据处理存储过程 不带参数-->
   <procedureList>
-    <proc value="sp_ding_source_tx_sync"></proc>
-    <proc value=""></proc>
-    <proc value=""></proc>
-    <proc value=""></proc>
+    <proc value="sp_ding_source_tx_sync">
+    </proc>
+    <proc value="sp_ding_paiban_tx_sync">
+    </proc>
+    <proc value="sp_ding_instance_tx_sync">
+    </proc>
+    <proc value="sp_ding_banzhi_tx_sync">
+    </proc>
   </procedureList>
   <syncParam>
-    <startTime value="2017/9/15 0:56:00">
+    <startTime value="2017-11-21 1:00:00">
     </startTime>
-    <interval value="2">
+    <interval value="180">
     </interval>
-    <timeRange value="12">
+    <timeRange value="24">
     </timeRange>
     <processRange value="10">
     </processRange>
-    <scheduleRange value="1">
+    <scheduleRange value="10">
     </scheduleRange>
   </syncParam>
 </root>

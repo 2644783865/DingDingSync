@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DingDingSync", "DingDingSync\DingDingSync.csproj", "{1B4BDBC9-5F09-4879-A4BE-308F2DFB4E32}"
 	ProjectSection(ProjectDependencies) = postProject

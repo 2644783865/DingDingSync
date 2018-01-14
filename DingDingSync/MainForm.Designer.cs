@@ -80,6 +80,7 @@
             this.lbRunInfo = new System.Windows.Forms.Label();
             this.btnInstallService = new System.Windows.Forms.Button();
             this.btnUninstallService = new System.Windows.Forms.Button();
+            this.btn_normal = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -567,11 +568,22 @@
             this.btnUninstallService.UseVisualStyleBackColor = true;
             this.btnUninstallService.Click += new System.EventHandler(this.btnUninstallService_Click);
             // 
+            // btn_normal
+            // 
+            this.btn_normal.Location = new System.Drawing.Point(559, 421);
+            this.btn_normal.Name = "btn_normal";
+            this.btn_normal.Size = new System.Drawing.Size(75, 23);
+            this.btn_normal.TabIndex = 9;
+            this.btn_normal.Text = "手动补采";
+            this.btn_normal.UseVisualStyleBackColor = true;
+            this.btn_normal.Click += new System.EventHandler(this.btn_normal_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(683, 466);
+            this.Controls.Add(this.btn_normal);
             this.Controls.Add(this.btnUninstallService);
             this.Controls.Add(this.btnInstallService);
             this.Controls.Add(this.lbRunInfo);
@@ -584,6 +596,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "钉钉考勤同步";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UIForm_FormClosing);
             this.groupBox1.ResumeLayout(false);
@@ -650,6 +663,7 @@
         private System.Windows.Forms.TextBox tbPaiban;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox chbBanzhi;
+        private System.Windows.Forms.Button btn_normal;
     }
 }
 

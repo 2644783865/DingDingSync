@@ -652,15 +652,26 @@ namespace Operation
                 }
                 else if (dr["title"].ToString().Contains(@"出差"))
                 {
-                    JArray jArray = JArray.Parse(result.form_component_values.form_component_value_vo[0].value);
-                    //JObject obj = jArray[0][1].ToObject<JObject>();
-                    //List<string> array = obj.Value<List<string>>("value");
-                    dr["begin_time"] = jArray[0][1]["value"][0];
-                    dr["end_time"] = jArray[0][1]["value"][1];
-                    dr["hours"] = jArray[0][1]["value"][2];
-                    dr["unit"] = jArray[0][1]["value"][3];
-                    dr["form_type"] = jArray[0][1]["value"][4];
-                    dr["instance_type"] = jArray[0][1]["value"][5];
+                    try
+                    {
+                        JArray jArray = JArray.Parse(result.form_component_values.form_component_value_vo[0].value);
+                        dr["begin_time"] = jArray[0][1]["value"][0];
+                        dr["end_time"] = jArray[0][1]["value"][1];
+                        dr["hours"] = jArray[0][1]["value"][2];
+                        dr["unit"] = jArray[0][1]["value"][3];
+                        dr["form_type"] = jArray[0][1]["value"][4];
+                        dr["instance_type"] = jArray[0][1]["value"][5];
+                    }
+                    catch (Exception)
+                    {
+                        JArray jArray = JArray.Parse(result.form_component_values.form_component_value_vo[0].value);
+                        dr["begin_time"] = jArray[0]["rowValue"][1]["value"][0];
+                        dr["end_time"] = jArray[0]["rowValue"][1]["value"][1];
+                        dr["hours"] = jArray[0]["rowValue"][1]["value"][2];
+                        dr["unit"] = jArray[0]["rowValue"][1]["value"][3];
+                        dr["form_type"] = jArray[0]["rowValue"][1]["value"][4];
+                        dr["instance_type"] = jArray[0]["rowValue"][1]["value"][5];
+                    }
                 }
                 else
                 {
@@ -781,6 +792,68 @@ namespace Operation
             }
         }
 
+        public static void ProcessResultData(DateTime FromDate, DateTime EndDate)
+        {
+            try
+            {
+                DBUtility db = new DBUtility();
+                //查询在职及近7天离职的员工工号
+                //DataTable dt = db.Select("zlemployee", new string[] { "code" }, "abs(datediff(day,isnull(lzdate,getdate()),getdate()))<=7");
+                DataTable dt = db.Select("zlemployee", new string[] { "code" });
+                List<string> userids = new List<string>();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    userids.Add(dr["code"].ToString());
+                }
+
+                AttendRequestBody attendReqBody = new AttendRequestBody();
+                attendReqBody.checkDateFrom = FromDate.ToString("yyyy-MM-dd HH:mm:ss");
+                attendReqBody.checkDateTo = EndDate.ToString("yyyy-MM-dd HH:mm:ss");
+
+                if (userids.Count <= 50)
+                {
+                    //员工数一次最多不能超过50
+                    attendReqBody.userIds = userids.GetRange(0, userids.Count);
+                    string reqBody = JsonConvert.SerializeObject(attendReqBody);
+                    GetAttendResult(reqBody, Configuration.CorpID, Configuration.CorpSecret);
+                    ReadResultJsonData();
+                }
+                else
+                {
+                    int cycleCount = userids.Count / 50;
+                    int tailNum = userids.Count % 50;
+                    int seed = 0;
+
+                    for (int index = 0; index < cycleCount; index++)
+                    {
+                        //员工数一次最多不能超过50
+                        attendReqBody.userIds = userids.GetRange(seed * 50, 50);
+                        string reqBody = JsonConvert.SerializeObject(attendReqBody);
+                        GetAttendResult(reqBody, Configuration.CorpID, Configuration.CorpSecret);
+                        ReadResultJsonData();
+
+                        seed++;
+                    }
+                    if (tailNum > 0)
+                    {
+                        attendReqBody.userIds = userids.GetRange(seed * 50, userids.Count - seed * 50);
+                        string reqBody = JsonConvert.SerializeObject(attendReqBody);
+                        GetAttendResult(reqBody, Configuration.CorpID, Configuration.CorpSecret);
+                        ReadResultJsonData();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                using (FileStream fs = new FileStream(GetDataPath("Error", "error.log"), FileMode.Append))
+                {
+                    Message msg = new Message(ex.Message);
+                    fs.Write(msg.bMsg, 0, msg.Length);
+                }
+            }
+        }
+
         //处理全量员工排班信息
         public static void ProcessScheudleListData()
         {
@@ -795,6 +868,34 @@ namespace Operation
                     offset += 200;
                     GetScheduleList(work_date.ToString("yyyy-MM-dd HH:mm:ss"), Configuration.CorpID, Configuration.CorpSecret, offset, 200);
                 }
+            }
+        }
+
+        public static void ProcessScheudleListData(DateTime FromDate, DateTime EndDate)
+        {
+            //DateTime today = DateTime.Now;
+            //for (int index = 0 - Configuration.ScheduleRange; index <= Configuration.ScheduleRange; index++)
+            //{
+            //    DateTime work_date = today.AddDays(index);
+            //    int offset = 0;
+            //    GetScheduleList(work_date.ToString("yyyy-MM-dd HH:mm:ss"), Configuration.CorpID, Configuration.CorpSecret, 0, 200);
+            //    while (ReadScheduleListJsonData())
+            //    {
+            //        offset += 200;
+            //        GetScheduleList(work_date.ToString("yyyy-MM-dd HH:mm:ss"), Configuration.CorpID, Configuration.CorpSecret, offset, 200);
+            //    }
+            //}
+
+            while (FromDate <= EndDate)
+            {
+                int offset = 0;
+                GetScheduleList(FromDate.ToString("yyyy-MM-dd HH:mm:ss"), Configuration.CorpID, Configuration.CorpSecret, 0, 200);
+                while (ReadScheduleListJsonData())
+                {
+                    offset += 200;
+                    GetScheduleList(FromDate.ToString("yyyy-MM-dd HH:mm:ss"), Configuration.CorpID, Configuration.CorpSecret, offset, 200);
+                }
+                FromDate = FromDate.AddDays(1);
             }
         }
 
@@ -815,6 +916,20 @@ namespace Operation
                 while (cursor > 0)
                 {
                     GetProcessInstanceList(processCode, DateTime.Now.AddDays(0 - Configuration.ProcessRange), DateTime.Now, cursor, 10, Configuration.CorpID, Configuration.CorpSecret);
+                    cursor = ReadProcessInstanceJsonData();
+                }
+            }
+        }
+
+        public static void ProcessInstanceData(DateTime FromDate, DateTime EndDate)
+        {
+            foreach (string processCode in Configuration.ProcessCodes)
+            {
+                GetProcessInstanceList(processCode, FromDate, EndDate, 0, 10, Configuration.CorpID, Configuration.CorpSecret);
+                int cursor = ReadProcessInstanceJsonData();
+                while (cursor > 0)
+                {
+                    GetProcessInstanceList(processCode, FromDate, EndDate, cursor, 10, Configuration.CorpID, Configuration.CorpSecret);
                     cursor = ReadProcessInstanceJsonData();
                 }
             }

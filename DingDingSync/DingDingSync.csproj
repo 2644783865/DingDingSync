@@ -87,10 +87,19 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ManualForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManualForm.Designer.cs">
+      <DependentUpon>ManualForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManualForm.resx">
+      <DependentUpon>ManualForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -122,6 +131,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Conf\Conf.csproj">
+      <Project>{7356ccc9-5706-4193-9693-dfc4c6448131}</Project>
+      <Name>Conf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBUtility\DBUtility.csproj">
+      <Project>{11da1bb4-dcb4-46a3-9ef4-156c953a0227}</Project>
+      <Name>DBUtility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DesHelper\DesHelper.csproj">
       <Project>{1f7c784c-9ff8-478f-be23-5a40f03cbefc}</Project>
       <Name>DesHelper</Name>

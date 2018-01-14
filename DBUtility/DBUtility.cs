@@ -164,6 +164,7 @@ namespace DBTools
                     sqlConnection.Open();
                     SqlCommand cmd = new SqlCommand(procName, sqlConnection);
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = 60;
                     cmd.ExecuteNonQuery();
                 }
             }

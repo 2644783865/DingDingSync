@@ -504,6 +504,13 @@ namespace DingDingSync
             }
             MessageBox.Show("服务不存在或服务尚在运行,请停止服务后在尝试卸载");
         }
+
+        //手动补采
+        private void btn_normal_Click(object sender, EventArgs e)
+        {
+            ManualForm manualForm = new ManualForm();
+            manualForm.ShowDialog();
+        }
     }
 
     internal class ServiceAction
